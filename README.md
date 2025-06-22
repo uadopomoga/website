@@ -1,10 +1,10 @@
-# UA-Dopomoga
+# uadopomoga
 
-A web platform for promoting volunteerism and mutual aid culture in Ukraine.
+A website for promoting volunteerism and mutual aid culture in Ukraine.
 
 ## About the Project
 
-UA-Dopomoga is a website built with Astro that showcases volunteer initiatives, resources, and news for those providing help in Ukraine. The platform aims to connect volunteers, share important information, and promote a culture of mutual assistance.
+uadopomoga is a website built with Astro that showcases volunteer initiatives, resources, and news for those providing help in Ukraine. The platform aims to connect volunteers, share important information, and promote a culture of mutual assistance.
 
 ## Features
 
@@ -25,10 +25,10 @@ UA-Dopomoga is a website built with Astro that showcases volunteer initiatives, 
 
 ```bash
 # Clone the repository
-git clone https://github.com/olyaprykhodko/ua-dopomoga.git
+git clone https://github.com/olyaprykhodko/uadopomoga.git
 
 # Navigate to project directory
-cd ua-dopomoga
+cd uadopomoga
 
 # Install dependencies
 npm install
@@ -40,7 +40,7 @@ npm run dev
 ## Project Structure
 
 ```
-ua-dopomoga/
+uadopomoga/
 ├── public/               # Static assets
 │   └── images/
 │       └── posts/        # Blog post images
@@ -76,17 +76,17 @@ ua-dopomoga/
 
 ````markdown
 ---
-title: 'Title of your post'
+title: "Title of your post"
 images:
-  - src: '/content-images/posts/new-posts/image1.jpg'
-    alt: 'Description of image 1'
-  - src: '/content-images/posts/new-posts/image2.jpg'
-    alt: 'Description of image 2'
+  - src: "/content-images/posts/new-posts/image1.jpg"
+    alt: "Description of image 1"
+  - src: "/content-images/posts/new-posts/image2.jpg"
+    alt: "Description of image 2"
 date: YYYY-MM-DD
 background_image:
-  src: '/content-images/posts/new-posts/image1.jpg'
-  alt: 'Description of image 1'
-cta: 'Дізнатись більше'
+  src: "/content-images/posts/new-posts/image1.jpg"
+  alt: "Description of image 1"
+cta: "Дізнатись більше"
 ---
 
 Main content of your post goes here. You can use **Markdown** formatting.
@@ -107,7 +107,6 @@ You can reference these images in your content using standard Markdown syntax:
 - List item 2
 
 [Link text](https://example.com)
-
 
 ### Adding Images
 
@@ -131,7 +130,7 @@ npm run build
 
 # Preview production build
 npm run preview
-````
+```
 
 ### Adding Components
 
@@ -147,17 +146,3 @@ This project can be deployed on any static hosting platform like:
 - Netlify
 - Vercel
 - GitHub Pages
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## Contact
-
-Project Link: [https://github.com/your-username/ua-dopomoga](https://github.com/your-username/ua-dopomoga)
