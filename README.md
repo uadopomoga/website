@@ -25,7 +25,7 @@ uadopomoga is a website built with Astro that showcases volunteer initiatives, r
 
 ```bash
 # Clone the repository
-git clone https://github.com/olyaprykhodko/uadopomoga.git
+git clone https://github.com/unleftie/uadopomoga.git
 
 # Navigate to project directory
 cd uadopomoga
@@ -64,7 +64,7 @@ uadopomoga/
 
 1. Navigate to the repository on GitHub.
 2. Go to the `public/content-images/posts/new-posts` directory.
-3. Upload your images to the new folder by clicking "Add file" > "Upload files".  
+3. Upload your images to the new folder by clicking "Add file" > "Upload files".
    _After uploading, make sure to click "Commit changes" at the bottom to save the images and the folder._
 4. Go to the `src/content/posts` directory.
 5. Click the "Add file" button and select "Create new file".
