@@ -2,6 +2,13 @@
 
 A website for promoting volunteerism and mutual aid culture in Ukraine.
 
+## URL's
+
+| Environment | URL                                                  |
+| ----------- | ---------------------------------------------------- |
+| prod        | [uadopomoga.com.ua](https://uadopomoga.com.ua)       |
+| dev         | [uadopomoga.pages.dev](https://uadopomoga.pages.dev) |
+
 ## About the Project
 
 uadopomoga is a website built with Astro that showcases volunteer initiatives, resources, and news for those providing help in Ukraine. The platform aims to connect volunteers, share important information, and promote a culture of mutual assistance.
