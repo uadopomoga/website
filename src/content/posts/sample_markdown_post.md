@@ -7,7 +7,7 @@ image:
   ]
 image_alt: 'Волонтери з медикаментами'
 date: 2024-06-12
-background_image: '/content-images/posts/new-posts/test.jpg'
+background_image: '/content-images/posts/new-posts/dostavka.jpg'
 background_image_alt: 'Medicals'
 cta: 'Допомогти проекту'
 ---

@@ -3,9 +3,17 @@ import Layout from '../layouts/Layout.astro';
 
 import Home from '../components/Home.astro';
 import PostsCarousel from '../components/PostsCarousel.astro';
+import About from '../components/About.astro';
+import Possibilities from '../components/Possibilities.astro';
+import Contacts from '../components/Contacts.astro';
+import Footer from '../components/Footer.astro';
 
 import home_content from '../data/home.json';
 import global_settings from '../data/global_settings.json'
+import about from '../data/about.json'
+import possibilities from '../data/possibilities.json'
+import contacts from '../data/contacts.json'
+import navigation from '../data/navigation.json'
 
 
 ---
@@ -16,5 +24,12 @@ import global_settings from '../data/global_settings.json'
 
 	<PostsCarousel posts_title={home_content.posts_title}/>
 
+	<About title={about.title} preview={about.preview} image={about.image} image_alt={about.image_alt} bg={about.bg} link={about.about_link} cta={about.cta}/>
+
+	<Possibilities items={possibilities}/>
+
+	<Contacts contacts={contacts}/>
+
+	<Footer settings={global_settings} navigation={navigation}/>
 
 </Layout>

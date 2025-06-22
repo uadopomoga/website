@@ -4,32 +4,24 @@
   "social_image": "",
   "base_url": "",
   "demo": {
-    "title": "Volunteers Kharkiv?",
+    "title": "Volunteers Kharkiv",
     "content": "Приймай участь у розвитку волонтерського руху",
-    "cta": "Підтримати"
+    "cta": "Підтримати збір"
   },
   "theme_color": "#18181b",
 
   "social_links": [
     {
-      "title": "Twitter / X",
-      "link": "https://x.com/blackspikeltd/"
+      "title": "YouTube",
+      "link": "https://www.youtube.com/@uadopomoga.volunteerskhark5458"
     },
     {
-      "title": "Mastodon",
-      "link": "https://mastodon.cloud/@blackspike"
+      "title": "TikTok",
+      "link": "https://www.tiktok.com/@uadopomoga2022"
     },
     {
-      "title": "GitHub",
-      "link": "https://github.com/blackspike/"
-    },
-    {
-      "title": "LinkedIn",
-      "link": "https://www.linkedin.com/company/blackspike"
-    },
-    {
-      "title": "Bluesky",
-      "link": "https://bsky.app/profile/blackspike.com/"
+      "title": "Instagram",
+      "link": "https://www.instagram.com/uadopomoga_"
     }
   ]
 }

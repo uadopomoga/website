@@ -4,10 +4,44 @@ import {getAllPosts} from '../utils/get_posts.mjs'
 
 import Arrow from '../assets/theme-images/icon-arrow.svg'
 
-const { posts_title } = Astro.props
+import Image from 'astro/components/Image.astro';
+interface Post {
+  title: string;
+  content: string;
+  image?: string;
+  image_alt?: string;
+  background_image: string;
+  background_image_alt: string;
+  cta: string;
+}
+interface Props {
+  posts_title?: string;
+}
 
-const posts = await getAllPosts();
+const { posts_title } = Astro.props as Props;
+
+const rawPosts = await getAllPosts();
+
+const posts: Post[] = rawPosts
+  .filter((item: any) =>
+    typeof item.title === "string" &&
+    typeof item.content === "string" &&
+    typeof item.background_image === "string" &&
+    typeof item.background_image_alt === "string" &&
+    typeof item.cta === "string"
+  )
+  .map((item: any) => ({
+    title: item.title,
+    content: item.content,
+    image: Array.isArray(item.image) ? item.image[0] : item.image,
+    image_alt: item.image_alt,
+    background_image: item.background_image,
+    background_image_alt: item.background_image_alt,
+    cta: item.cta,
+  }));
+
 ---
+
 
 <section id="services">
 
@@ -51,9 +85,11 @@ const posts = await getAllPosts();
         <figure class="flex flex-col gap-6 isolate min-h-[50svh] md:min-h-[40rem] h-full">
 
           {/* BG image */}
-          <img src={item.background_image} alt={ item.image_alt } loading="lazy"
+          <Image src={item.background_image} alt={item.image_alt ?? ""}  loading="lazy"
             class="opacity-20 md:opacity-80 rounded-xl grayscale overflow-hidden w-full h-full object-cover object-left absolute inset-0"
-            height="1024" width="768" />
+            height="1024" width="768" 
+            loading="eager"
+            />
 
           {/* Gradient mask */}
           <div

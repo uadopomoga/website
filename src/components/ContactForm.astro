@@ -1,0 +1,70 @@
+---
+export const prerender = false;
+
+type formData = {
+  name: string;
+  email: string;
+  message: string;
+};
+
+if (Astro.request.method === "POST") {
+  try {
+    const formData = await Astro.request.formData();
+    const response = await fetch(Astro.url + "/api/sendEmail.json", {
+      method: "POST",
+      body: formData,
+       headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    const data: formData = await response.json();
+
+    if (response.status === 200) {
+      console.log(data.message);
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(`Error: ${error.message}`);
+    }
+  }
+} // Form handle code
+
+---
+
+      <!-- Form -->
+      <form action='/api/sendEmail.json' method='POST' enctype="multipart/form-data" class="flex gap-4 flex-col">
+
+        <label class="sr-only" for="name">Name</label>
+          <input
+            id="name"
+            type="text"
+            name="name"
+            class="border-2 rounded-lg text-center bg-bs-surface-0 border-bs-surface-3 form-input px-4 py-3"
+            placeholder="Ім'я та прізвище"
+            required
+          />
+
+
+        <label class="sr-only" for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          class="border-2 rounded-lg text-center bg-bs-surface-0 border-bs-surface-3 form-input px-4 py-3"
+          placeholder="Email"
+          required
+        />
+
+        <label class="sr-only" for="message">Email</label>
+        <textarea 
+          id="message" 
+          name="message"
+          class="border-2 rounded-lg text-center focus:text-left bg-bs-surface-0 border-bs-surface-3 form-input px-4 py-3" 
+          placeholder="Ваше повідомлення..."
+          required
+        />
+        
+        <input type="submit" value='Надіслати' class="bs-btn form-input px-4 py-3">
+
+      </form>

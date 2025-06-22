@@ -3,6 +3,7 @@ import '../assets/css/global.css'
 import '../assets/css/base.css'
 import '../assets/css/layout.css'
 import '../assets/css/text.css'
+import '../assets/css/buttons.css'
 
 import global_settings from '../data/global_settings.json'
 
@@ -23,9 +24,7 @@ const {title, description} = Astro.props
 
     <title>UAdopomoga</title>
 
-    <link rel="icon" type="image/webp" href="/favicon.webp" />
-    <link rel="manifest" href="/manifest.json" />
-
+    <link rel="icon" type="image/png" href="/favicon.png" />
 
     <meta name="theme-color" content='#18181b' />
 
@@ -43,7 +42,7 @@ const {title, description} = Astro.props
 
 	<body id="top">
 		
-		<Image src={bg_image} alt="" format="webp" height={1080} width={1920} class="absolute min-h-svh object-cover inset-0 bottom-auto -z-1 w-full h-auto opacity-40 mask-b-from-50%" />
+		<Image src={bg_image} alt="" format="webp" height={1080} width={1920} class="absolute min-h-svh object-cover inset-0 bottom-auto -z-1 w-full h-auto opacity-40 mask-b-from-50%" loading='eager'/>
 
 		<Header></Header>
 

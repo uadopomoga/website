@@ -1,25 +1,38 @@
 ---
 import home_content from '../data/home.json'
 const {title = home_content.title, content = home_content.content} = Astro.props
+
+import Links from './Links.astro'
+
+import Image from 'astro/components/Image.astro'
+import logo from '../assets/theme-images/logo.png'
 ---
 
-<section class="bs-container py-6 flex flex-col lg:flex-row items-center">
-
-  <!-- Content -->
-  <div class="flex flex-col gap-6 lg:max-w-lg w-full py-16">
-
-    <!-- Title -->
-    <h1 class="bs-h1" set:html={ title } />
-
+<section class="bs-container py-8 flex flex-col lg:flex-row items-stretch gap-12 justify-between">
+  <!-- Left: Mainpage content, aligned left -->
+  <div class="flex flex-col gap-6 lg:max-w-lg w-full items-start py-16 lg:py-32 flex-1">
+    <!-- Logo and Title -->
+    <div class="flex items-center w-full">
+      <a class="flex xl:min-w-16 group" href="/" aria-label='logo'>
+        <Image src={logo} alt="logo" width="64" height="64" class="opacity-80 rounded-2xl" loading="eager" />
+      </a>
+      <h1 class="bs-h1 ml-4" set:html={ title } />
+    </div>
     <!-- Content -->
-    <div class="bs-body-text xl:text-xl flex flex-col gap-4 [&_p]:last:text-bs-foreground-dark" set:html={content} />
-
-    <!-- CTA -->
-    <button type="button" class="bs-btn self-start bs-mt-sm" onclick="demo.showModal()">
-    </button>
-
+    <div class="bs-body-text xl:text-xl flex flex-col gap-4 [&_p]:last:text-bs-foreground-dark w-full" set:html={content} />
+    <!-- Support section -->
+    <div class="p-8 rounded-none border-l-4 border-bs-primary/30 bg-bs-surface-0/5 w-full">
+      <h3 class="bs-h3 mb-6">Підтримати проект</h3>
+      <p class="bs-body-text mb-8 max-w-2xl">
+        Ваша підтримка допомагає нам продовжувати нашу роботу з надання допомоги там, де вона найбільш необхідна.
+      </p>
+      <a href="https://send.monobank.ua/jar/ujQ7yBDQy" class="bs-btn inline-block">
+        Фінансово підтримати
+      </a>
+    </div>
   </div>
-
-
-
+  <!-- Right: Contacts section, aligned right -->
+  <div class="flex flex-col gap-6 lg:max-w-lg w-full items-end py-16 lg:py-32 flex-1">
+    <Links />
+  </div>
 </section>

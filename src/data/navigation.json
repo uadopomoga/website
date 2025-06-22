@@ -7,6 +7,10 @@
     {
       "title": "Новини",
       "link": "/news"
+    },
+    {
+      "title": "Контакти",
+      "link": "/#contacts"
     }
   ]
 }
