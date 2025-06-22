@@ -4,10 +4,10 @@ A website for promoting volunteerism and mutual aid culture in Ukraine.
 
 ## URL's
 
-| Environment | URL                                                  |
-| ----------- | ---------------------------------------------------- |
-| prod        | [uadopomoga.com.ua](https://uadopomoga.com.ua)       |
-| dev         | [uadopomoga.pages.dev](https://uadopomoga.pages.dev) |
+| Environment | URL                                                    |
+| ----------- | ------------------------------------------------------ |
+| prod        | [uadopomoga.com.ua](https://uadopomoga.com.ua)         |
+| dev         | [dev.uadopomoga.com.ua](https://dev.uadopomoga.com.ua) |
 
 ## About the Project
 
