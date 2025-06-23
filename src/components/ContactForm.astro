@@ -3,7 +3,7 @@ export const prerender = false;
 ---
 
       <!-- Form -->
-      <form id="contact-form" class="flex gap-4 flex-col">
+      <form id="contact-form" class="flex gap-4 flex-col" action="#">
 
         <label class="sr-only" for="name">Name</label>
           <input
@@ -42,14 +42,19 @@ export const prerender = false;
 <script>
 console.log('ContactForm script loaded');
 
-document.addEventListener('DOMContentLoaded', function() {
-  console.log('DOM loaded, looking for contact form');
+function initContactForm() {
+  console.log('Initializing contact form');
   const form = document.getElementById('contact-form') as HTMLFormElement;
   console.log('Found form:', form);
   
-  if (form) {
-    console.log('Adding submit event listener to form');
-    form.addEventListener('submit', async function(e) {
+  if (!form) {
+    console.error('Contact form not found! Retrying in 100ms...');
+    setTimeout(initContactForm, 100);
+    return;
+  }
+  
+  console.log('Adding submit event listener to form');
+  form.addEventListener('submit', async function(e) {
       console.log('Form submit event triggered');
       e.preventDefault();
       
@@ -108,6 +113,16 @@ document.addEventListener('DOMContentLoaded', function() {
         submitButton.disabled = false;
       }
     });
-  }
-});
+}
+
+// Try to initialize immediately
+initContactForm();
+
+// Also try on DOMContentLoaded as backup
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initContactForm);
+} else {
+  // DOM is already loaded
+  initContactForm();
+}
 </script>
