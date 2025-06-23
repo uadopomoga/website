@@ -54,8 +54,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
       message: message?.toString().substring(0, 50) + '...',
     });
 
-    // Making sure values are not empty
-
     if (!name || !email || !message) {
       console.log('Missing required fields');
       return new Response(
@@ -72,12 +70,9 @@ export const POST: APIRoute = async ({ request, locals }) => {
       );
     }
 
-    console.log('Attempting to send email via Resend');
-
-    // Sending information to Resend
     const sendResend = await resend.emails.send({
-      from: 'contact@dev.uadopomoga.com.ua', // Using your verified domain
-      to: 'o.u.prihodko@gmail.com',
+      from: 'contact@dev.uadopomoga.com.ua', // Using the verified domain
+      to: 'denisrondalev@gmail.com',
       subject: `Guest ${name} from UAdopomoga`,
       html: `
         <h2>New message from UAdopomoga</h2>
@@ -111,9 +106,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
       );
     } else {
       console.log('Email send failed:', sendResend.error);
-
-      // Return success to user but log the error for debugging
-      // In production, you might want to save to database or alternative logging
       console.error(
         'Resend error details:',
         JSON.stringify(sendResend.error, null, 2)
@@ -125,7 +117,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
           note: 'Email delivery issue logged for admin review',
         }),
         {
-          status: 200, // Return 200 so user doesn't see error
+          status: 200,
           statusText: 'OK',
           headers: {
             'Content-Type': 'application/json',
