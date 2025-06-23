@@ -10,10 +10,12 @@
       <div class="aspect-video w-full overflow-hidden rounded-2xl">
         <iframe 
           class="w-full h-full"
-          src="https://www.youtube.com/embed/nxSkv9_SI68?si=9K6DNf0LMxjk51I7&modestbranding=1&rel=0" 
+          src="https://www.youtube-nocookie.com/embed/nxSkv9_SI68?modestbranding=1&rel=0&iv_load_policy=3&disablekb=1&fs=1&cc_load_policy=0&origin=localhost&enablejsapi=0&widget_referrer=null" 
           title="YouTube video player" 
+          loading="lazy"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-          allowfullscreen>
+          allowfullscreen
+          referrerpolicy="strict-origin-when-cross-origin">
         </iframe>
       </div>
     
@@ -36,3 +38,32 @@
   </div>
 
 </section>
+
+<script>
+  // Suppress YouTube tracking console errors that don't affect functionality
+  if (typeof console !== 'undefined') {
+    const originalError = console.error;
+    const originalWarn = console.warn;
+    
+    console.error = function(...args) {
+      const message = args.join(' ');
+      // Filter out YouTube tracking errors
+      if (message.includes('youtube') && 
+          (message.includes('ERR_BLOCKED_BY_CLIENT') || 
+           message.includes('generate_204') || 
+           message.includes('log_event'))) {
+        return;
+      }
+      originalError.apply(console, args);
+    };
+    
+    console.warn = function(...args) {
+      const message = args.join(' ');
+      // Filter out YouTube tracking warnings
+      if (message.includes('youtube') && message.includes('ERR_BLOCKED_BY_CLIENT')) {
+        return;
+      }
+      originalWarn.apply(console, args);
+    };
+  }
+</script>
