@@ -6,17 +6,29 @@ export const POST: APIRoute = async ({ request, locals }) => {
   try {
     console.log('=== API endpoint called ===');
 
-    // Try multiple ways to access the environment variable
+    // Try multiple ways to access the environment variables
     const resendApiKey =
       import.meta.env.RESEND_API_KEY ||
       process.env.RESEND_API_KEY ||
       (locals as any)?.runtime?.env?.RESEND_API_KEY;
+
+    const toEmail =
+      import.meta.env.CONTACT_EMAIL ||
+      process.env.CONTACT_EMAIL ||
+      (locals as any)?.runtime?.env?.CONTACT_EMAIL;
+
+    const fromEmail =
+      import.meta.env.RESEND_EMAIL ||
+      process.env.RESEND_EMAIL ||
+      (locals as any)?.runtime?.env?.RESEND_EMAIL;
 
     console.log('Environment variable check:', {
       fromImportMeta: !!import.meta.env.RESEND_API_KEY,
       fromProcess: !!process.env.RESEND_API_KEY,
       fromLocals: !!(locals as any)?.runtime?.env?.RESEND_API_KEY,
       hasAnyKey: !!resendApiKey,
+      hasToEmail: !!toEmail,
+      hasFromEmail: !!fromEmail,
     });
 
     if (!resendApiKey) {
@@ -31,6 +43,40 @@ export const POST: APIRoute = async ({ request, locals }) => {
         {
           status: 500,
           statusText: 'Email service configuration error',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+    }
+
+    if (!toEmail) {
+      console.error('CONTACT_EMAIL environment variable is not set');
+      return new Response(
+        JSON.stringify({
+          message: `Email recipient not configured`,
+          debug: 'CONTACT_EMAIL not found in environment',
+        }),
+        {
+          status: 500,
+          statusText: 'Email configuration error',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+    }
+
+    if (!fromEmail) {
+      console.error('RESEND_EMAIL environment variable is not set');
+      return new Response(
+        JSON.stringify({
+          message: `Email sender not configured`,
+          debug: 'RESEND_EMAIL not found in environment',
+        }),
+        {
+          status: 500,
+          statusText: 'Email configuration error',
           headers: {
             'Content-Type': 'application/json',
           },
@@ -71,8 +117,8 @@ export const POST: APIRoute = async ({ request, locals }) => {
     }
 
     const sendResend = await resend.emails.send({
-      from: 'contact@dev.uadopomoga.com.ua', // Using the verified domain
-      to: 'denisrondalev@gmail.com',
+      from: fromEmail, // Using environment variable
+      to: toEmail, // Using environment variable
       subject: `Guest ${name} from UAdopomoga`,
       html: `
         <h2>New message from UAdopomoga</h2>
