@@ -1,9 +1,6 @@
 export const prerender = false; // Important line!
 
 import type { APIRoute } from 'astro';
-import { Resend } from 'resend';
-
-const resend = new Resend(import.meta.env.RESEND_API_KEY);
 
 export const POST: APIRoute = async ({ request }) => {
   try {
@@ -25,6 +22,11 @@ export const POST: APIRoute = async ({ request }) => {
         }
       );
     }
+
+    console.log('API key found, initializing Resend...');
+
+    const { Resend } = await import('resend');
+    const resend = new Resend(import.meta.env.RESEND_API_KEY);
 
     const data = await request.formData();
     const name = data.get('name');
