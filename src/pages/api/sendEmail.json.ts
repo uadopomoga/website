@@ -59,7 +59,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     // Sending information to Resend
     const sendResend = await resend.emails.send({
-      from: 'onboarding@resend.dev', // Use the default Resend domain for testing
+      from: 'dev.uadopomoga.com.ua',
       to: 'o.u.prihodko@gmail.com',
       subject: `New submission from ${name}`,
       html: `
