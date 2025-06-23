@@ -78,9 +78,9 @@ export const POST: APIRoute = async ({ request, locals }) => {
     const sendResend = await resend.emails.send({
       from: 'contact@dev.uadopomoga.com.ua', // Using your verified domain
       to: 'o.u.prihodko@gmail.com',
-      subject: `New submission from ${name}`,
+      subject: `Guest ${name} from UAdopomoga`,
       html: `
-        <h2>New Contact Form Submission</h2>
+        <h2>New message from UAdopomoga</h2>
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
         <p><strong>Message:</strong></p>
