@@ -62,13 +62,19 @@ document.addEventListener('DOMContentLoaded', function() {
           body: formData
         });
         
-        const result = await response.json();
+        let result;
+        try {
+          result = await response.json();
+        } catch (jsonError) {
+          console.error('Failed to parse JSON response:', jsonError);
+          result = { message: 'Отримано недійсну відповідь від сервера' };
+        }
         
         if (response.ok) {
           alert('Повідомлення успішно надіслано!');
           form.reset();
         } else {
-          alert(`Помилка: ${result.message}`);
+          alert(`Помилка: ${result.message || 'Невідома помилка'}`);
         }
       } catch (error) {
         console.error('Error:', error);
