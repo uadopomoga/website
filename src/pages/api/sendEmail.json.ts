@@ -6,10 +6,16 @@ import { Resend } from 'resend';
 const resend = new Resend(import.meta.env.RESEND_API_KEY);
 
 export const POST: APIRoute = async ({ request }) => {
+  console.log('API endpoint called');
+
   const data = await request.formData();
   const name = data.get('name');
   const email = data.get('email');
-  const message = data.get('message'); // Making sure values are not empty
+  const message = data.get('message');
+
+  console.log('Received data:', { name, email, message });
+
+  // Making sure values are not empty
 
   if (!name || !email || !message) {
     return new Response(
@@ -28,7 +34,7 @@ export const POST: APIRoute = async ({ request }) => {
 
   const sendResend = await resend.emails.send({
     from: 'support@resend.dev',
-    to: 'o.u.prihodko@gmail.com', // change this property to actual domain
+    to: 'o.u.prihodko@gmail.com',
     subject: `Sumbission from ${name}`,
     html: `<p>Hi ${name},</p><p>Your message was received.</p>`,
   }); // If the message was sent successfully, return a 200 response
