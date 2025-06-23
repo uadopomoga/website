@@ -1,39 +1,9 @@
 ---
 export const prerender = false;
-
-type formData = {
-  name: string;
-  email: string;
-  message: string;
-};
-
-if (Astro.request.method === "POST") {
-  try {
-    const formData = await Astro.request.formData();
-    const response = await fetch(Astro.url + "/api/sendEmail.json", {
-      method: "POST",
-      body: formData,
-       headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-
-    const data: formData = await response.json();
-
-    if (response.status === 200) {
-      console.log(data.message);
-    }
-  } catch (error) {
-    if (error instanceof Error) {
-      console.error(`Error: ${error.message}`);
-    }
-  }
-} // Form handle code
-
 ---
 
       <!-- Form -->
-      <form method='POST' class="flex gap-4 flex-col">
+      <form id="contact-form" method='POST' class="flex gap-4 flex-col">
 
         <label class="sr-only" for="name">Name</label>
           <input
@@ -68,3 +38,46 @@ if (Astro.request.method === "POST") {
         <input type="submit" value='Надіслати' class="bs-btn form-input px-4 py-3">
 
       </form>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  
+  if (form) {
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const submitButton = form.querySelector('input[type="submit"]') as HTMLInputElement;
+      if (!submitButton) return;
+      
+      const originalText = submitButton.value;
+      submitButton.value = 'Надсилання...';
+      submitButton.disabled = true;
+      
+      try {
+        const formData = new FormData(form);
+        
+        const response = await fetch('/api/sendEmail.json', {
+          method: 'POST',
+          body: formData
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+          alert('Повідомлення успішно надіслано!');
+          form.reset();
+        } else {
+          alert(`Помилка: ${result.message}`);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Виникла помилка при надсиланні повідомлення');
+      } finally {
+        submitButton.value = originalText;
+        submitButton.disabled = false;
+      }
+    });
+  }
+});
+</script>
