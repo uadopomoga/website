@@ -2,16 +2,31 @@ export const prerender = false; // Important line!
 
 import type { APIRoute } from 'astro';
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, locals }) => {
   try {
-    console.log('API endpoint called');
+    console.log('=== API endpoint called ===');
 
-    // Check if RESEND_API_KEY exists
-    if (!import.meta.env.RESEND_API_KEY) {
-      console.error('RESEND_API_KEY environment variable is not set');
+    // Try multiple ways to access the environment variable
+    const resendApiKey =
+      import.meta.env.RESEND_API_KEY ||
+      process.env.RESEND_API_KEY ||
+      (locals as any)?.runtime?.env?.RESEND_API_KEY;
+
+    console.log('Environment variable check:', {
+      fromImportMeta: !!import.meta.env.RESEND_API_KEY,
+      fromProcess: !!process.env.RESEND_API_KEY,
+      fromLocals: !!(locals as any)?.runtime?.env?.RESEND_API_KEY,
+      hasAnyKey: !!resendApiKey,
+    });
+
+    if (!resendApiKey) {
+      console.error(
+        'RESEND_API_KEY environment variable is not set in any location'
+      );
       return new Response(
         JSON.stringify({
           message: `Email service not configured`,
+          debug: 'RESEND_API_KEY not found in environment',
         }),
         {
           status: 500,
@@ -26,7 +41,7 @@ export const POST: APIRoute = async ({ request }) => {
     console.log('API key found, initializing Resend...');
 
     const { Resend } = await import('resend');
-    const resend = new Resend(import.meta.env.RESEND_API_KEY);
+    const resend = new Resend(resendApiKey);
 
     const data = await request.formData();
     const name = data.get('name');
