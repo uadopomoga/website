@@ -64,17 +64,26 @@ document.addEventListener('DOMContentLoaded', function() {
       try {
         const formData = new FormData(form);
         
+        console.log('About to make fetch request to /api/sendEmail.json');
+        console.log('FormData contents:');
+        for (let [key, value] of formData.entries()) {
+          console.log(key, value);
+        }
+        
         const response = await fetch('/api/sendEmail.json', {
           method: 'POST',
           body: formData
         });
         
+        console.log('Fetch completed');
         console.log('Response status:', response.status);
         console.log('Response headers:', response.headers.get('content-type'));
+        console.log('Response URL:', response.url);
         
         // Get response text first to debug
         const responseText = await response.text();
         console.log('Response text:', responseText);
+        console.log('Response text length:', responseText.length);
         
         let result;
         try {
