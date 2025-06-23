@@ -2,7 +2,7 @@
 export const prerender = false;
 ---
 
-      <!-- Form -->
+      <!-- Contact Form -->
       <form id="contact-form" class="flex gap-4 flex-col" action="#" method="POST">
 
         <label class="sr-only" for="name">Name</label>
@@ -40,12 +40,17 @@ export const prerender = false;
       </form>
 
 <script>
+let formInitialized = false;
 
 function initContactForm() {
+  if (formInitialized) return;
+  
   const form = document.getElementById('contact-form') as HTMLFormElement;
+  if (!form) return;
+  
+  formInitialized = true;
   
   form.addEventListener('submit', async function(e) {
-      console.log('Form submit event triggered');
       e.preventDefault();
       
       const submitButton = form.querySelector('input[type="submit"]') as HTMLInputElement;
@@ -57,10 +62,6 @@ function initContactForm() {
       
       try {
         const formData = new FormData(form);
-
-        for (let [key, value] of formData.entries()) {
-          console.log(key, value);
-        }
         
         const response = await fetch('/api/sendEmail.json', {
           method: 'POST',
@@ -90,7 +91,6 @@ function initContactForm() {
           submitButton.style.color = 'white';
           form.reset();
           
-          // Reset button after 3 seconds
           setTimeout(() => {
             submitButton.value = originalText;
             submitButton.style.backgroundColor = '';
