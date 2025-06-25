@@ -1,17 +1,21 @@
 @import 'tailwindcss';
 
 @theme {
-  --font-display: var(--font-inter-display), 'ui-sans-serif', 'system-ui',
-    'sans-serif';
+  --font-display:
+    var(--font-inter-display), 'ui-sans-serif', 'system-ui', 'sans-serif';
   --font-body: var(--font-inter), 'ui-sans-serif', 'system-ui', 'sans-serif';
 
   --color-bs-surface-0: #121212;
-  --color-bs-surface-1: #18181b;
-  --color-bs-surface-2: rgba(255, 255, 255, 0.03);
+  --color-bs-surface-1: #34322a;
+  --color-bs-surface-2: rgba(255, 255, 255, 0.63);
   --color-bs-surface-3: #2f2f31;
+  --color-bs-surface-4: #1e76cc; /* blue */
+  --color-bs-surface-5: rgb(224, 149, 38); /* yellow */
+  --color-bs-surface-7: f1ecd3;
 
   --color-bs-foreground-light: #eee;
   --color-bs-foreground-dark: #9f9f9f;
+  --color-bs-foreground-yellow: rgb(224, 149, 38);
 
   --color-current: currentColor;
 

@@ -16,22 +16,20 @@ const { title, preview, image, image_alt, bg, link, cta } = Astro.props
 
 <!-- Wrapper -->
 <div class="group @container">
-
-  <!-- Case study -->
   <article
     class:list={["relative isolate flex h-full w-full gap-6 overflow-hidden rounded-xl pt-[20rem] @md:pt-[28rem] @xl:justify-end @4xl:pt-0", bg]}>
 
     <Image
       src={image}
       alt={image_alt}
-      class="drop-shadow-[0_100px_100px_rgba(0,0,0,0.5)] absolute top-[4cqb] left-8 mx-auto w-[90cqi] rounded-xl  @4xl:w-[60cqi] group-hover:scale-105 transition-transform duration-3000 ease-bs-spring transform-gpu"
+      class="drop-shadow-[0_200px_200px_rgba(0,0,0,0.5)] absolute left-0 mx-auto w-[90cqi] rounded-xl  @4xl:w-[60cqi] group-hover:scale-105 transition-transform duration-3000 ease-bs-spring transform-gpu -translate-y-95"
       loading="lazy"
       height="1024"
       width="768"
-    >
+    />
 
     <!-- Content -->
-    <div class="z-10 flex h-full w-full flex-col gap-6 bg-bs-surface-0/50 backdrop-blur-3xl p-6 @4xl:w-1/2 @4xl:p-20">
+    <div class="z-10 flex h-full w-full flex-col gap-6 bg-bs-surface-3 backdrop-blur-3xl p-6 @4xl:w-1/2 @4xl:p-20">
 
       <!-- Intro -->
       <div class="bs-body-text flex-grow text-balance" set:html={preview} />

@@ -1,0 +1,112 @@
+---
+import { getAllPosts } from '../utils/get_posts.mjs'
+import Image from 'astro/components/Image.astro'
+
+// Get all posts (both markdown and JSON)
+const allPosts = await getAllPosts()
+
+// Function to truncate content for preview
+function truncateContent(content: string, maxLength: number = 150) {
+  const textContent = content.replace(/<[^>]*>/g, '') // Remove HTML tags
+  return textContent.length > maxLength 
+    ? textContent.substring(0, maxLength) + '...' 
+    : textContent
+}
+
+// Function to format date
+function formatDate(dateString: string) {
+  const date = new Date(dateString)
+  return date.toLocaleDateString('uk-UA', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  })
+}
+---
+
+<section class="bs-container bs-mt-lg">
+  <!-- Background -->
+<div class="bg-bs-surface-2 rounded-2xl p-8 md:p-12 relative overflow-hidden">
+    <!-- Content -->
+    <div class="relative z-10">
+      <!-- Header -->
+      <header class="text-center mb-12">
+        <h1 class="bs-h1 text-bs-surface-3">Новини</h1>
+        <p class="bs-body-text text-bs-surface-3 mt-4 max-w-2xl mx-auto text-xl">
+          Останні новини про нашу волонтерську діяльність та допомогу на деокупованих територіях
+        </p>
+      </header>
+
+      <!-- Posts Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+      {allPosts.map((post: any) => (
+        <article class="bg-bs-surface-3 border-bs-surface-2 rounded-xl overflow-hidden hover:shadow-lg transition-shadow">
+          <a href={`/posts/${post.slug}`} class="block">
+            {/* Post Image */}
+            {post.background_image && (
+              <div class="relative h-64 overflow-hidden">
+                <Image 
+                  src={post.background_image}
+                  alt={post.background_image_alt}
+                  width={400}
+                  height={192}
+                  class="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+            )}
+            
+            {/* Post Content */}
+            <div class="p-6">
+              {/* Date */}
+              <time class="text-sm text-bs-foreground-light mb-2 block">
+                {formatDate(post.date)}
+              </time>
+              
+              {/* Title */}
+              <h2 class="bs-h3 mb-3 line-clamp-2 hover:text-bs-primary transition-colors">
+                {post.title}
+              </h2>
+              
+              {/* Content Preview */}
+              <p class="bs-body-text text-bs-foreground-light mb-4 line-clamp-3">
+                {truncateContent(post.content)}
+              </p>
+              
+              {/* Read More Link */}
+              <span class="bs-btn-link text-bs-primary hover:underline text-bs-foreground-yellow">
+                {post.cta}
+              </span>
+            </div>
+          </a>
+        </article>
+      ))}
+    </div>
+    
+    {/* Empty State */}
+    {allPosts.length === 0 && (
+      <div class="text-center py-12">
+        <p class="bs-body-text text-bs-foreground-light">
+          Новини скоро з'являться
+        </p>
+      </div>
+    )}
+    </div>
+  </div>
+</section>
+
+<style>
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

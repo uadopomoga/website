@@ -5,8 +5,13 @@ import oldPosts from '../data/posts/old_posts.json';
 export async function getAllPosts() {
   const mdPosts = await getCollection('posts');
 
+  // Filter out draft posts in production
+  const filteredMdPosts = mdPosts.filter(
+    (post) => import.meta.env.DEV || !post.data.draft
+  );
+
   const formattedMdPosts = await Promise.all(
-    mdPosts.map(async (post) => {
+    filteredMdPosts.map(async (post) => {
       const { Content } = await post.render();
 
       return {
@@ -27,11 +32,19 @@ export async function getAllPosts() {
     })
   );
 
-  const formattedJsonPosts = oldPosts.map((post) => ({
+  const formattedJsonPosts = oldPosts.map((post, index) => ({
     ...post,
     date: post.date,
     isMdPost: false,
-    slug: null,
+    slug: post.url
+      ? post.url
+          .toString()
+          .toLowerCase()
+          .replace(/[^a-zA-Zа-яА-Я0-9\s-]/g, '') // Remove special characters except hyphens
+          .replace(/\s+/g, '-') // Replace spaces with hyphens
+          .replace(/-+/g, '-') // Collapse multiple hyphens
+          .replace(/^-+|-+$/g, '') // Trim hyphens from start/end
+      : `post-${index}`, // Fallback to index if url is missing
   }));
 
   const allPosts = [...formattedMdPosts, ...formattedJsonPosts].sort(

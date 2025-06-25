@@ -1,0 +1,13 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Footer from '../components/Footer.astro';
+import NewsComponent from '../components/NewsComponent.astro'
+
+import global_settings from '../data/global_settings.json'
+import navigation from '../data/navigation.json'
+---
+
+<Layout title="Новини - UAdopomoga" description="Останні новини про волонтерську діяльність та допомогу на деокупованих територіях України">
+	<NewsComponent />
+    <Footer settings={global_settings} navigation={navigation}/>
+</Layout>

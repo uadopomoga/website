@@ -50,7 +50,47 @@ const {title, description} = Astro.props
 			<slot 
 		/>
 		</main>
+	
 		
+		<script>
+			// Handle anchor navigation
+			document.addEventListener('DOMContentLoaded', function() {
+				// Handle clicks on anchor links
+				document.addEventListener('click', function(e) {
+					if (!e.target || !(e.target instanceof Element)) return;
+					const link = e.target.closest('a');
+					if (link && link.href) {
+						const url = new URL(link.href);
+						// Check if this is an anchor link to the same page
+						if (url.pathname === window.location.pathname && url.hash) {
+							e.preventDefault();
+							const target = document.querySelector(url.hash);
+							if (target) {
+								target.scrollIntoView({ 
+									behavior: 'smooth',
+									block: 'start'
+								});
+								// Update URL without page reload
+								history.pushState(null, '', url.hash);
+							}
+						}
+					}
+				});
+				
+				// Handle direct navigation to anchor (e.g., page refresh on /#contacts)
+				if (window.location.hash) {
+					setTimeout(() => {
+						const target = document.querySelector(window.location.hash);
+						if (target) {
+							target.scrollIntoView({ 
+								behavior: 'smooth',
+								block: 'start'
+							});
+						}
+					}, 100); // Small delay to ensure page is loaded
+				}
+			});
+		</script>
 	</body>
 </html>
 

@@ -22,7 +22,7 @@ const {contacts} = Astro.props
     <!-- Content container -->
     <div class="z-10 w-full max-w-5xl flex flex-col lg:flex-row gap-8">
       <!-- Left side: Contact information -->
-      <div class="bg-bs-surface-0/95 p-6 md:p-10 rounded-xl flex flex-col gap-6 lg:w-2/5">
+      <div class="bg-bs-surface-3 text-bs-surface-2 p-6 md:p-10 rounded-xl flex flex-col gap-6 lg:w-2/5">
         <h2 class="bs-h2 text-left">{contacts.title}</h2>
         
         <!-- Address -->
@@ -44,25 +44,22 @@ const {contacts} = Astro.props
           </svg>
           <div class="bs-body-text">
             <p>{contacts.name}</p>
-            <a href="tel:+380985550368" class="text-bs-primary hover:underline">{contacts.phone}</a>
-            <p class="text-bs-foreground-light text-sm">{contacts.working_hours}</p>
+            <a href={contacts.phone} class="text-bs-primary hover:underline">{contacts.phone}</a>
+            <p class="text-bs-foreground-yellow text-sm">{contacts.working_hours}</p>
           </div>
         </div>
         
-        <!-- Email (added) -->
-        <div class="flex items-start gap-3 text-left">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mt-1 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect width="20" height="16" x="2" y="4" rx="2"/>
-            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
-          </svg>
-          <a href="mailto:alexeypaziy@gmail.com" class="bs-body-text text-bs-primary hover:underline">{contacts.email}</a>
+        <!-- Info -->
+        <div class="flex items-start gap-3 text-left bs-body-text flex-col">
+          <a class="font-semibold hover:underline" href={contacts.you_control} target="_blank">БЛАГОДІЙНА ОРГАНІЗАЦІЯ «БЛАГОДІЙНИЙ ФОНД «ЮАДОПОМОГА»</a>
+          <p class="text-bs-foreground-yellow text-sm">Код ЄДРПОУ 45144495</p>
         </div>
       </div>
 
       <!-- Contact form -->
-      <div class="bg-bs-surface-0/95 p-6 md:p-10 rounded-xl flex flex-col gap-6 lg:w-3/5">
-        <h2 class="bs-h2 text-left">Напишіть нам</h2>
-        <div class="bs-body-text flex-grow">
+      <div class="bg-bs-surface-3 p-6 md:p-10 rounded-xl flex flex-col gap-6 lg:w-3/5">
+        <h2 class="bs-h2 text-left text-bs-surface-2">Напишіть нам</h2>
+        <div class="bs-body-text flex-grow text-bs-surface-2 ">
           Маєте питання чи пропозиції? Зв'яжіться з нами за допомогою форми нижче, і ми відповімо вам якнайшвидше.
         </div>
         <ContactForm />

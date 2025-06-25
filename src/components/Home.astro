@@ -1,6 +1,8 @@
 ---
 import home_content from '../data/home.json'
-const {title = home_content.title, content = home_content.content} = Astro.props
+import global_settings from '../data/global_settings.json'
+
+const {title, content, main_fundraise} = Astro.props
 
 import Links from './Links.astro'
 
@@ -26,13 +28,13 @@ import logo from '../assets/theme-images/logo.png'
       <p class="bs-body-text mb-8 max-w-2xl">
         Ваша підтримка допомагає нам продовжувати нашу роботу з надання допомоги там, де вона найбільш необхідна.
       </p>
-      <a href="https://send.monobank.ua/jar/ujQ7yBDQy" class="bs-btn inline-block">
-        Фінансово підтримати
-      </a>
+        <a href={main_fundraise} class="bs-btn inline-block" target="_blank">
+          Фінансово підтримати
+        </a>
     </div>
   </div>
   <!-- Right: Contacts section, aligned right -->
-  <div class="flex flex-col gap-6 lg:max-w-lg w-full items-end py-16 lg:py-32 flex-1">
-    <Links />
+  <div class="flex flex-col gap-6 lg:max-w-2xl w-full items-end py-16 lg:py-32 flex-1">
+    <Links settings={global_settings}/>
   </div>
 </section>

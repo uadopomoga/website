@@ -8,10 +8,12 @@ const postsCollection = defineCollection({
     image_alt: z.string(),
     background_image: z.string().optional(),
     background_image_alt: z.string(),
+    video: z.string().optional(),
     date: z.coerce.date(),
     category: z.string().optional(),
     cta: z.string().optional(),
     featured: z.boolean().optional().default(false),
+    draft: z.boolean().optional().default(false),
   }),
 });
 

@@ -10,7 +10,7 @@ const { settings, navigation } = Astro.props
 <footer class="@container bs-container my-24 font-semibold text-bs-foreground-dark [&_a]:hover:text-bs-foreground-light [&_a]:transition-color [&_a]:duration-150" id="contact">
 
   <!-- Wrapper -->
-  <div class="bg-bs-surface-2 p-6 md:p-16 rounded-xl grid md:grid-cols-2 gap-8">
+  <div class="bg-bs-surface-3 p-6 md:p-16 rounded-xl grid md:grid-cols-2 gap-8">
 
       <!-- Left col -->
     <div class="w-full md:w-max flex flex-col gap-8 md:gap-0 justify-between text-bs-foreground-light">
@@ -26,9 +26,9 @@ const { settings, navigation } = Astro.props
       </a>
 
       <!-- CTA Button -->
-      <button type="button" class="min-w-full md:min-w-32 bs-btn block bg-bs-surface-3 mt-4 md:mt-0" onclick="demo.showModal()">
-        { settings.demo.cta }
-      </button>
+      <a href={settings.main_fundraise} class="min-w-full md:min-w-32 bs-btn block bg-bs-surface-3 mt-4 md:mt-0 text-center" target="_blank">
+        {settings.demo.cta}
+      </a>
 
       </div>
 
@@ -53,7 +53,7 @@ const { settings, navigation } = Astro.props
 
           {settings.social_links.map((item: { title: string; link: string }) =>
 
-            <a href={ item.link } target="_blank">
+            <a href={ item.link } target="_blank" class="text-bs-foreground-yellow">
               { item.title }
             </a>
 

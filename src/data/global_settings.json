@@ -2,11 +2,11 @@
   "title": "UAdopomoga",
   "description": "Формуємо культуру волонтерства та взаємодопомоги в Україні",
   "social_image": "",
-  "base_url": "",
+  "base_url": "uadopomoga.com.ua",
   "demo": {
     "title": "Volunteers Kharkiv",
     "content": "Приймай участь у розвитку волонтерського руху",
-    "cta": "Підтримати збір"
+    "cta": "Підтримати фонд"
   },
   "theme_color": "#18181b",
 
@@ -23,5 +23,8 @@
       "title": "Instagram",
       "link": "https://www.instagram.com/uadopomoga_"
     }
-  ]
+  ],
+  "main_video": "https://www.youtube-nocookie.com/embed/nxSkv9_SI68?si=vsjwFbI9Q84qjYxS",
+  "main_fundraise": "https://send.monobank.ua/jar/ujQ7yBDQy",
+  "linktree": "https://linktr.ee/uadopomoga"
 }

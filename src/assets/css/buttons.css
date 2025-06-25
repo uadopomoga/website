@@ -3,8 +3,8 @@
 
 .bs-btn {
   @apply active:translate-y-[1px]
-    active:bg-bs-surface-2
-    bg-bs-surface-3
+    active:bg-bs-surface-4/80
+    bg-bs-surface-5/80
     duration-200
     focus-visible:outline-none
     focus-visible:ring-2

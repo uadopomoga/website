@@ -1,0 +1,114 @@
+--- 
+import about from '../data/about.json'
+import Image from 'astro/components/Image.astro'
+---
+
+<section class="bs-container bs-mt-lg" id="about">
+  <!-- Background -->
+  <div class=" p-8 md:p-12 relative overflow-hidden ">
+    <!-- Content -->
+    <div class="relative z-10 bg-bs-surface-2 rounded-2xl pt-10 pr-10 pl-10">
+      <!-- Header -->
+      <div class="text-center mb-12 text-bs-surface-1">
+        <h1 class="bs-h1 mb-6">{about.title}</h1>
+        <p class="bs-body-text text-xl text-bs-surface-3 max-w-3xl mx-auto">
+          {about.preview}
+        </p>
+      </div>
+
+      <!-- Main Content -->
+      <div class="grid lg:grid-cols-5 gap-8 items-start">
+        
+        <!-- Content Section -->
+        <div class="lg:col-span-3">
+          <div class="prose prose-xl max-w-none bg-bs-surface-3 rounded-2xl p-6">
+            <div set:html={about.content} class="
+              text-lg font-medium text-bs-surface-2
+              [&_strong]:text-bs-surface-2
+              [&_strong]:font-bold 
+              [&_strong]:text-2xl
+              [&_ul]:space-y-3
+              [&_span]:text-bs-foreground-yellow
+              [&_li]:leading-relaxed
+              [&_li]:text-lg
+              [&_li]:font-medium
+              [&_hr]:border-bs-surface-2
+              [&_hr]:my-8
+              [&_p]:leading-relaxed
+              [&_p]:mb-6
+              [&_p]:text-lg
+              [&_p]:font-medium
+              [&_p]:text-bs-surface-3
+            " />
+          </div>
+        </div>
+
+        <!-- Image Section -->
+        <div class="lg:col-span-2">
+          <div class="sticky top-8">
+            <div class="relative overflow-hidden rounded-xl shadow-lg">
+              <Image 
+                src={about.image} 
+                alt={about.image_alt}
+                width={600}
+                height={400}
+                class="w-full h-auto object-cover"
+                loading="eager"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+            </div>
+            <div class="relative overflow-hidden rounded-xl shadow-lg">
+              <Image 
+                src={about.image_2} 
+                alt={about.image_alt}
+                width={600}
+                height={400}
+                class="w-full h-auto object-cover pt-5"
+                loading="eager"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Section -->
+      <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Stat 1 -->
+        <div class="text-center p-6 bg-bs-surface-3 rounded-xl border border-bs-surface-3">
+          <div class="text-4xl font-bold text-bs-foreground-yellow mb-2">100+</div>
+          <div class="text-bs-foreground-dark">Локацій отримали допомогу</div>
+        </div>
+
+        <!-- Stat 2 -->
+        <div class="text-center p-6 bg-bs-surface-3 rounded-xl border border-bs-surface-3">
+          <div class="text-4xl font-bold  text-bs-foreground-yellow mb-2">24.02</div>
+          <div class="text-bs-foreground-dark">Початок нашої діяльності</div>
+        </div>
+
+        <!-- Stat 3 -->
+        <div class="text-center p-10 bg-bs-surface-3 rounded-xl border border-bs-surface-3">
+          <div class="text-4xl font-bold text-bs-foreground-yellow mb-2">6+</div>
+          <div class="text-bs-foreground-dark">Напрямків роботи</div>
+        </div>
+
+      </div>
+
+      <!-- Call to Action -->
+      <div class="mt-12 pb-6 text-center">
+        <div class="bg-bs-surface-3 rounded-xl p-8 border border-bs-surface-3">
+          <h3 class="bs-h3 mb-4 text-bs-surface-2">Готові приєднатися?</h3>
+          <p class="bs-body-text text-bs-surface-2 mb-6 max-w-2xl mx-auto">
+            Ми завжди раді новим волонтерам, які готові допомогти нашій країні
+          </p>
+          <a href="/#contact" class="bs-btn inline-block">
+            Зв'язатися з нами
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+

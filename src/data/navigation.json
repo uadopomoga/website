@@ -9,6 +9,10 @@
       "link": "/news"
     },
     {
+      "title": "Про нас",
+      "link": "/about"
+    },
+    {
       "title": "Контакти",
       "link": "/#contacts"
     }

@@ -1,0 +1,13 @@
+---
+
+import Layout from "../layouts/Layout.astro";
+import AboutComponent from "../components/AboutComponent.astro";
+
+import global_settings from '../data/global_settings.json';
+import about from '../data/about.json'
+---
+
+<Layout title={global_settings.title} description={global_settings.description}>
+    <AboutComponent about></AboutComponent>
+</Layout>
+

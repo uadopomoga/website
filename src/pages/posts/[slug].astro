@@ -1,50 +1,182 @@
 ---
 import Layout from '../../layouts/Layout.astro'
-
-import { getCollection } from 'astro:content';
+import Image from 'astro/components/Image.astro'
+import { getCollection } from 'astro:content'
+import posts from '../../data/posts/old_posts.json'
 
 export async function getStaticPaths() {
-  const posts = await getCollection('posts');
-  return posts.map(post => ({
-    params: { slug: post.slug},
-    props: { post },
+  // Get markdown posts from content collection
+  const mdPosts = await getCollection('posts');
+  
+  // Create paths for markdown posts
+  const mdPaths = mdPosts.map(post => ({
+    params: { slug: post.slug },
+    props: { post: { ...post.data, slug: post.slug, isMdPost: true, body: post.body } },
   }));
+
+  // Create slugs for old JSON posts and return static paths
+  const postsWithSlugs = posts.map((post, index) => ({
+    ...post,
+    slug: post.url 
+      ? post.url
+          .toString()
+          .toLowerCase()
+          .replace(/[^a-zA-Zа-яА-Я0-9\s-]/g, '') // Remove special characters except hyphens
+          .replace(/\s+/g, '-') // Replace spaces with hyphens
+          .replace(/-+/g, '-') // Collapse multiple hyphens
+          .replace(/^-+|-+$/g, '') // Trim hyphens from start/end
+      : `post-${index}` // Fallback to index if url is missing
+  }));
+
+  const jsonPaths = postsWithSlugs.map(post => ({
+    params: { slug: post.slug },
+    props: { post: { ...post, isMdPost: false } },
+  }));
+
+  // Combine both types of paths
+  return [...mdPaths, ...jsonPaths];
 }
 
 const { post } = Astro.props;
 
-const formattedDate = new Date(post.data.date).toLocaleDateString('uk-UA', {
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric'
-});
-
-let Content;
-try {
-  const rendered = await post.render();
-  Content = rendered.Content;
-} catch (error) {
-  console.error('Error rendering post:', error);
+// Function to format date
+function formatDate(dateString: string | Date) {
+  const date = typeof dateString === 'string' ? new Date(dateString) : dateString;
+  return date.toLocaleDateString('uk-UA', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  })
 }
+
+const formattedDate = formatDate(post.date);
 ---
 
-<Layout title={post.data.title}>
-  <article class="bs-container py-16">
+<Layout title={post.title}>
+  <article class="bs-container rounded-2xl p-16 bg-bs-surface-2">
+    <!-- Back to News -->
+    <div class="mb-8">
+      <a href="/news" class="bs-btn-link text-bs-surface-1 hover:underline flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5"/>
+          <path d="m12 19-7-7 7-7"/>
+        </svg>
+        Повернутися до новин
+      </a>
+    </div>
+
+    <div class="bg-bs-surface-3 rounded-2xl p-15">
+
     <header class="mb-12">
-      <div class="mb-6 text-bs-foreground-dark">
+      <!-- Date -->
+      <div class="mb-6 text-bs-foreground-yellow">
         {formattedDate}
       </div>
-      <h1 class="bs-h1 mb-8">{post.data.title}</h1>
       
-      <img 
-        src={post.data.background_image} 
-        alt={post.data.background_image_alt} 
-        class="w-full aspect-video object-cover mb-12 rounded-lg"
-      />
+      <!-- Title -->
+      <h1 class="bs-h1 mb-8 text-bs-surface-2">{post.title}</h1>
+      
+      <!-- Featured Image -->
+      {post.background_image && (
+        <div class="mb-12">
+          <Image 
+            src={post.background_image} 
+            alt={post.background_image_alt} 
+            width={1200}
+            height={600}
+            class="w-full aspect-video object-cover rounded-xl"
+            loading="eager"
+          />
+        </div>
+      )}
     </header>
     
-    <main class="bs-body-text xl:text-lg">
-      {Content ? <Content /> : <div set:html={post.body} />}
-    </div>
+    <!-- Content -->
+    <main class="prose prose-lg max-w-none">
+      <div class="bs-body-text xl:text-lg mb-15 text-bs-surface-2">
+        {post.isMdPost ? (
+          <div set:html={(post as any).body} />
+        ) : (
+          <div set:html={(post as any).content} />
+        )}
+      </div>
+
+      <!-- Video (only for posts that have video) -->
+      {((post as any).video) && (
+        <div class="aspect-video w-full overflow-hidden rounded-2xl">
+          <iframe 
+            class="w-full h-full"
+            src={(post as any).video}
+            title="YouTube video player" 
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            allowfullscreen
+            referrerpolicy="strict-origin-when-cross-origin">
+          </iframe>
+        </div>
+      )}
+      
+      {/* Image Gallery */}
+      {post.image && Array.isArray(post.image) && post.image.length > 0 && (
+        <div class="mt-12">
+          <h2 class="bs-h3 mb-6 text-bs-surface-3">Галерея</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {post.image.map((imageSrc: string, index: number) => (
+              <div class="aspect-square overflow-hidden rounded-lg">
+                <Image 
+                  src={imageSrc}
+                  alt={`${post.image_alt} - зображення ${index + 1}`}
+                  width={400}
+                  height={400}
+                  class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+      <a href="/news" class="bs-btn flex items-right mt-10 w-60">
+          Переглянути всі новини
+        </a>
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-16 pt-8 border-t border-bs-surface-3">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <!-- Share -->
+        <div class="flex items-center gap-4">
+          <span class="text-bs-foreground-light">Поділитися:</span>
+          <div class="flex gap-2">
+            <a 
+              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(Astro.url.href)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="p-2 rounded-full bg-bs-surface-2 hover:bg-bs-primary hover:text-white transition-colors"
+              aria-label="Поділитися у Facebook"
+            >
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+              </svg>
+            </a>
+            <a 
+              href={`https://telegram.me/share/url?url=${encodeURIComponent(Astro.url.href)}&text=${encodeURIComponent(post.title)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="p-2 rounded-full bg-bs-surface-2 hover:bg-bs-primary hover:text-white transition-colors"
+              aria-label="Поділитися у Telegram"
+            >
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+        <!-- Back to News -->
+        
+      </div>
+    </footer>
   </article>
 </Layout>

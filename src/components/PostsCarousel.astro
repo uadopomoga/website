@@ -13,6 +13,7 @@ interface Post {
   background_image: string;
   background_image_alt: string;
   cta: string;
+  slug?: string;
 }
 interface Props {
   posts_title?: string;
@@ -38,7 +39,9 @@ const posts: Post[] = rawPosts
     background_image: item.background_image,
     background_image_alt: item.background_image_alt,
     cta: item.cta,
-  }));
+    slug: item.slug,
+  }))
+  .slice(0, 3);
 
 ---
 
@@ -80,45 +83,59 @@ const posts: Post[] = rawPosts
 
       // Slides
 
-      <div class="swiper-slide bg-bs-surface-0 border border-bs-surface-3 rounded-xl overflow-hidden !h-auto">
+      <div class="swiper-slide bs border border-bs-surface-3 rounded-xl overflow-hidden !h-auto">
 
-        <figure class="flex flex-col gap-6 isolate min-h-[50svh] md:min-h-[40rem] h-full">
+        <a href={item.slug ? `/posts/${item.slug}` : '#'} class="block" onclick="event.stopPropagation()">
+          <figure class="flex flex-col gap-6 isolate min-h-[50svh] md:min-h-[40rem] h-full">
 
-          {/* BG image */}
-          <Image src={item.background_image} alt={item.image_alt ?? ""}  loading="lazy"
-            class="opacity-20 md:opacity-80 rounded-xl grayscale overflow-hidden w-full h-full object-cover object-left absolute inset-0"
-            height="1024" width="768" 
-            loading="eager"
-            />
+            {/* BG image */}
+            <Image src={item.background_image} alt={item.image_alt ?? ""}  loading="lazy"
+              class="rounded-xl overflow-hidden w-full h-full object-cover object-left absolute inset-0"
+              height="1024" width="768" 
+              loading="eager"
+              />
 
-          {/* Gradient mask */}
-          <div
-            class="hidden md:block absolute rounded-xl overflow-hidden w-full h-full object-cover object-left inset-0 bg-gradient-to-r from-bs-surface-0/90 via-bs-surface-0/60">
-          </div>
+            {/* Gradient mask */}
+            <div class="hidden md:block absolute rounded-xl overflow-hidden w-full h-full object-cover object-left inset-0 bg-gradient-to-r from-bs-surface-3 via-bs-surface-3/70 to-transparent" style="--tw-gradient-from-position: 0%; --tw-gradient-to-position: 90%;"></div>
 
-          {/* Content */}
-          <figcaption class="z-10 p-6 sm:p-10 md:p-20 max-w-xl flex flex-col gap-6 h-full">
+            {/* Content */}
+            <figcaption class="z-10 p-6 sm:p-10 md:p-20 max-w-xl flex flex-col gap-6 h-full">
 
-            {/* Title */}
-            <h2 class="bs-h2" set:html={ item.title } />
+              {/* Title */}
+              <h2 class="bs-h2" set:html={ item.title } />
 
-            {/* Intro */}
-            <div class="bs-body-text text-pretty flex-1" set:html={ item.content } />
+              {/* Intro */}
+              <div class="bs-body-text text-pretty flex-1 mt-10">
+                {
+                (() => {
+                  const text = item.content.replace(/<[^>]+>/g, '');
+                  const sentences = text.match(/[^.!?]+[.!?]+/g) || [text];
+                  return sentences.slice(0, 2).join(' ');
+                })()
+                }
+              </div>
 
-            {/* Cta */}
-            <button type="button" class="bs-btn inline-block self-start bs-mt-sm" onclick="demo.showModal()">
-              { item.cta }
-            </button>
+              {/* Cta */}
+              <a href={item.slug ? `/posts/${item.slug}` : '#'} class="bs-btn inline-block self-start bs-mt-sm" onclick="event.stopPropagation()">
+                { item.cta }
+              </a>
 
-          </figcaption>
+            </figcaption>
 
-        </figure>
+          </figure>
+        </a>
 
       </div>
-
       )}
 
     </div>
+  </div>
+
+  <!-- All News Link -->
+  <div class="bs-container mt-8 text-center flex">
+    <a href="/news" class="bs-btn inline-block">
+      Переглянути всі новини
+    </a>
   </div>
 
 </section>
@@ -136,6 +153,9 @@ const swiper = new Swiper('.js-fc-swiper', {
   speed: 500,
   loop: true,
   centeredSlides: true,
+  allowTouchMove: true,
+  preventClicks: false,
+  preventClicksPropagation: false,
   breakpoints: {
     '640': {
       slidesPerView: 1.2,
