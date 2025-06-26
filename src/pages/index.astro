@@ -17,13 +17,13 @@ import navigation from '../data/navigation.json'
 
 ---
 
-<Layout title={global_settings.title} description={global_settings.description}>
+<Layout title={global_settings.title} description={global_settings.description} theme_color={global_settings.theme_color}>
 
 	<Home title={home_content.title} content={home_content.content} main_fundraise={global_settings.main_fundraise}/>
 
 	<PostsCarousel posts_title={home_content.posts_title}/>
 
-	<AboutPreview title={about.title} preview={about.preview} image={about.image} image_alt={about.image_alt} bg={about.bg} link={about.about_link} cta={about.cta}/>
+	<AboutPreview title={about.title} preview={about.preview} image={about.image} image_alt={about.image_alt} link={about.about_link} cta={about.cta}/>
 
 	<Possibilities items={possibilities}/>
 

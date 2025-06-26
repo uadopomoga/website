@@ -1,13 +1,16 @@
 ---
 
 import Layout from "../layouts/Layout.astro";
+import Footer from "../components/Footer.astro";
 import AboutComponent from "../components/AboutComponent.astro";
 
 import global_settings from '../data/global_settings.json';
 import about from '../data/about.json'
+import navigation from '../data/navigation.json'
 ---
 
-<Layout title={global_settings.title} description={global_settings.description}>
+<Layout title={`Про нас - ${global_settings.title}`} description="Дізнайтеся більше про нашу волонтерську організацію та місію допомоги на деокупованих територіях України">
     <AboutComponent about></AboutComponent>
+    <Footer settings={global_settings} navigation={navigation}/>
 </Layout>
 

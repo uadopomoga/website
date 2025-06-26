@@ -1,40 +1,47 @@
 ---
-import home_content from '../data/home.json'
 import global_settings from '../data/global_settings.json'
-
-const {title, content, main_fundraise} = Astro.props
 
 import Links from './Links.astro'
 
 import Image from 'astro/components/Image.astro'
 import logo from '../assets/theme-images/logo.png'
+
+const {title, content, main_fundraise} = Astro.props
 ---
 
 <section class="bs-container py-8 flex flex-col lg:flex-row items-stretch gap-12 justify-between">
-  <!-- Left: Mainpage content, aligned left -->
+
+  <!-- Logo, title and description of the project -->
   <div class="flex flex-col gap-6 lg:max-w-lg w-full items-start py-16 lg:py-32 flex-1">
-    <!-- Logo and Title -->
+
     <div class="flex items-center w-full">
       <a class="flex xl:min-w-16 group" href="/" aria-label='logo'>
-        <Image src={logo} alt="logo" width="64" height="64" class="opacity-80 rounded-2xl" loading="eager" />
+        <Image src={logo} alt="logo" width="96" height="96" class="opacity-80 rounded-2xl" loading="eager" />
       </a>
-      <h1 class="bs-h1 ml-4" set:html={ title } />
+      <h1 class="bs-h1 ml-4" set:html={title} />
     </div>
+
     <!-- Content -->
     <div class="bs-body-text xl:text-xl flex flex-col gap-4 [&_p]:last:text-bs-foreground-dark w-full" set:html={content} />
-    <!-- Support section -->
+
+    <!-- Call to action -->
     <div class="p-8 rounded-none border-l-4 border-bs-primary/30 bg-bs-surface-0/5 w-full">
-      <h3 class="bs-h3 mb-6">Підтримати проект</h3>
+
+      <h2 class="bs-h3 mb-6">Підтримати проект</h3>
       <p class="bs-body-text mb-8 max-w-2xl">
         Ваша підтримка допомагає нам продовжувати нашу роботу з надання допомоги там, де вона найбільш необхідна.
       </p>
+
         <a href={main_fundraise} class="bs-btn inline-block" target="_blank">
           Фінансово підтримати
         </a>
+
     </div>
   </div>
-  <!-- Right: Contacts section, aligned right -->
+
+  <!-- Youtube and all links to project -->
   <div class="flex flex-col gap-6 lg:max-w-2xl w-full items-end py-16 lg:py-32 flex-1">
     <Links settings={global_settings}/>
   </div>
+
 </section>

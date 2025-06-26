@@ -1,54 +1,52 @@
 ---
 import Image from "astro/components/Image.astro"
 
-const { title, preview, image, image_alt, bg, link, cta } = Astro.props
+const { title, preview, image, image_alt, link, cta } = Astro.props
 
 ---
 
-<section class="bs-container bs-mt-lg" id="case-studies">
+<section class="bs-container bs-mt-lg" id="about">
 
-  <!-- Header -->
-  { title && <h2 class="bs-h2 text-center md:text-left">{ title }</h2> }
+  <!-- Title of the section -->
+  <h2 class="bs-h2 text-center md:text-left">{ title }</h2>
 
   <!-- About -->
   <div class="bs-mt-md">
 
+    <!-- Wrapper -->
+    <div class="group @container">
+      <article class="relative isolate flex flex-col h-full w-full gap-6 overflow-hidden rounded-xl @xl:flex-row @xl:justify-end bg-bs-surface-3 min-h-[500px] @md:min-h-[600px] @xl:min-h-[400px]">
 
-<!-- Wrapper -->
-<div class="group @container">
-  <article
-    class:list={["relative isolate flex h-full w-full gap-6 overflow-hidden rounded-xl pt-[20rem] @md:pt-[28rem] @xl:justify-end @4xl:pt-0", bg]}>
+        <!-- Image Container -->
+        <div class="relative @xl:w-1/2 @xl:flex-shrink-0">
+          <Image
+            src={image}
+            alt={image_alt}
+            class="w-full h-64 @md:h-80 @xl:h-full object-cover rounded-t-xl @xl:rounded-l-xl @xl:rounded-tr-none group-hover:scale-105 transition-transform duration-300 ease-out"
+            width={800}
+            height={600}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px"
+            loading="lazy"
+            decoding="async"
+          />
+          <!-- Gradient overlay for better text readability on mobile -->
+          <div class="absolute inset-0 bg-gradient-to-t from-bs-surface-3/80 via-transparent to-transparent @xl:hidden rounded-t-xl"></div>
+        </div>
 
-    <Image
-      src={image}
-      alt={image_alt}
-      class="drop-shadow-[0_200px_200px_rgba(0,0,0,0.5)] absolute left-0 mx-auto w-[90cqi] rounded-xl  @4xl:w-[60cqi] group-hover:scale-105 transition-transform duration-3000 ease-bs-spring transform-gpu -translate-y-95"
-      loading="lazy"
-      height="1024"
-      width="768"
-    />
+        <!-- Content -->
+        <div class="relative z-10 flex flex-col gap-6 p-6 @md:p-8 @xl:w-1/2 @xl:p-12 justify-center">
 
-    <!-- Content -->
-    <div class="z-10 flex h-full w-full flex-col gap-6 bg-bs-surface-3 backdrop-blur-3xl p-6 @4xl:w-1/2 @4xl:p-20">
+          <!-- Intro -->
+          <div class="bs-body-text text-balance @xl:text-lg leading-relaxed" set:html={preview} />
 
-      <!-- Intro -->
-      <div class="bs-body-text flex-grow text-balance" set:html={preview} />
-
-      <!-- CTA -->
-      <a href={link} class="bs-btn inline-block self-start @4xl:mt-12">
-        {cta}
-      </a>
-
+          <!-- CTA -->
+          <a href={link} class="bs-btn inline-block self-start mt-4 @xl:mt-6">
+            {cta}
+          </a>
+          
+        </div>
+      </article>
     </div>
-
-  </article>
-
-</div>
-
-
   </div>
-
-  
-
 </section>
 

@@ -3,6 +3,7 @@ import Layout from '../../layouts/Layout.astro'
 import Image from 'astro/components/Image.astro'
 import { getCollection } from 'astro:content'
 import posts from '../../data/posts/old_posts.json'
+import global_settings from '../../data/global_settings.json'
 
 export async function getStaticPaths() {
   // Get markdown posts from content collection
@@ -50,13 +51,16 @@ function formatDate(dateString: string | Date) {
 }
 
 const formattedDate = formatDate(post.date);
+
+// Get the current URL for sharing (build the full URL)
+const currentUrl = new URL(`/posts/${post.slug}`, Astro.site || 'https://uadopomoga.com').href;
 ---
 
-<Layout title={post.title}>
-  <article class="bs-container rounded-2xl p-16 bg-bs-surface-2">
+<Layout title={global_settings.title}>
+  <article class="bs-container rounded-2xl p-4 sm:p-8 md:p-16 bg-bs-surface-2">
     <!-- Back to News -->
-    <div class="mb-8">
-      <a href="/news" class="bs-btn-link text-bs-surface-1 hover:underline flex items-center gap-2">
+    <div class="mb-6 md:mb-8">
+      <a href="/news" class="bs-btn-link text-bs-surface-1 hover:underline flex items-center gap-2 text-sm md:text-base">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M19 12H5"/>
           <path d="m12 19-7-7 7-7"/>
@@ -65,26 +69,27 @@ const formattedDate = formatDate(post.date);
       </a>
     </div>
 
-    <div class="bg-bs-surface-3 rounded-2xl p-15">
+    <div class="bg-bs-surface-3 rounded-2xl p-4 sm:p-8 md:p-15">
 
-    <header class="mb-12">
+    <header class="mb-8 md:mb-12">
       <!-- Date -->
-      <div class="mb-6 text-bs-foreground-yellow">
+      <div class="mb-4 md:mb-6 text-bs-foreground-yellow text-sm md:text-base">
         {formattedDate}
       </div>
       
       <!-- Title -->
-      <h1 class="bs-h1 mb-8 text-bs-surface-2">{post.title}</h1>
+      <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-6 md:mb-8 text-bs-surface-2 leading-tight">{post.title}</h1>
       
       <!-- Featured Image -->
       {post.background_image && (
-        <div class="mb-12">
+        <div class="mb-8 md:mb-12">
           <Image 
             src={post.background_image} 
             alt={post.background_image_alt} 
             width={1200}
             height={600}
             class="w-full aspect-video object-cover rounded-xl"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
             loading="eager"
           />
         </div>
@@ -92,8 +97,8 @@ const formattedDate = formatDate(post.date);
     </header>
     
     <!-- Content -->
-    <main class="prose prose-lg max-w-none">
-      <div class="bs-body-text xl:text-lg mb-15 text-bs-surface-2">
+    <main class="prose prose-sm sm:prose-base md:prose-lg max-w-none">
+      <div class="bs-body-text text-base sm:text-lg xl:text-xl mb-8 md:mb-15 text-bs-surface-2 leading-relaxed">
         {post.isMdPost ? (
           <div set:html={(post as any).body} />
         ) : (
@@ -103,7 +108,7 @@ const formattedDate = formatDate(post.date);
 
       <!-- Video (only for posts that have video) -->
       {((post as any).video) && (
-        <div class="aspect-video w-full overflow-hidden rounded-2xl">
+        <div class="aspect-video w-full overflow-hidden rounded-xl md:rounded-2xl mb-8 md:mb-12">
           <iframe 
             class="w-full h-full"
             src={(post as any).video}
@@ -118,9 +123,9 @@ const formattedDate = formatDate(post.date);
       
       {/* Image Gallery */}
       {post.image && Array.isArray(post.image) && post.image.length > 0 && (
-        <div class="mt-12">
-          <h2 class="bs-h3 mb-6 text-bs-surface-3">Галерея</h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="mt-8 md:mt-12">
+          <h2 class="text-xl sm:text-2xl md:text-3xl font-semibold mb-4 md:mb-6 text-bs-surface-3">Галерея</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
             {post.image.map((imageSrc: string, index: number) => (
               <div class="aspect-square overflow-hidden rounded-lg">
                 <Image 
@@ -129,6 +134,7 @@ const formattedDate = formatDate(post.date);
                   width={400}
                   height={400}
                   class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   loading="lazy"
                 />
               </div>
@@ -136,47 +142,184 @@ const formattedDate = formatDate(post.date);
           </div>
         </div>
       )}
-      <a href="/news" class="bs-btn flex items-right mt-10 w-60">
+      <a href="/news" class="bs-btn inline-flex items-center justify-center mt-8 md:mt-10 w-full sm:w-auto min-w-48">
           Переглянути всі новини
         </a>
     </main>
 
     <!-- Footer -->
-    <footer class="mt-16 pt-8 border-t border-bs-surface-3">
-      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <footer class="mt-12 md:mt-16 pt-6 md:pt-8 border-t border-bs-surface-3">
+      <div class="flex flex-col gap-4 sm:gap-6">
         <!-- Share -->
-        <div class="flex items-center gap-4">
-          <span class="text-bs-foreground-light">Поділитися:</span>
-          <div class="flex gap-2">
+        <div class="flex flex-col gap-4">
+          <span class="text-bs-foreground-light text-sm md:text-base font-medium">Поділитися:</span>
+          <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
+            <!-- Facebook Share -->
             <a 
-              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(Astro.url.href)}`}
+              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`}
               target="_blank"
               rel="noopener noreferrer"
-              class="p-2 rounded-full bg-bs-surface-2 hover:bg-bs-primary hover:text-white transition-colors"
+              class="flex items-center gap-3 p-3 sm:p-2 md:p-3 rounded-xl sm:rounded-full bg-bs-surface-3 hover:bg-[#1877F2] hover:text-white transition-all duration-300 group"
               aria-label="Поділитися у Facebook"
             >
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
               </svg>
+              <span class="sm:hidden text-sm font-medium">Facebook</span>
             </a>
+            
+            <!-- Telegram Share -->
             <a 
-              href={`https://telegram.me/share/url?url=${encodeURIComponent(Astro.url.href)}&text=${encodeURIComponent(post.title)}`}
+              href={`https://telegram.me/share/url?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(post.title)}`}
               target="_blank"
               rel="noopener noreferrer"
-              class="p-2 rounded-full bg-bs-surface-2 hover:bg-bs-primary hover:text-white transition-colors"
+              class="flex items-center gap-3 p-3 sm:p-2 md:p-3 rounded-xl sm:rounded-full bg-bs-surface-3 hover:bg-[#229ED9] hover:text-white transition-all duration-300 group"
               aria-label="Поділитися у Telegram"
             >
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
               </svg>
+              <span class="sm:hidden text-sm font-medium">Telegram</span>
             </a>
+            
+            <!-- Copy Link -->
+            <button 
+              id="copy-link-btn"
+              class="flex items-center gap-3 p-3 sm:p-2 md:p-3 rounded-xl sm:rounded-full bg-bs-surface-3 hover:bg-bs-primary hover:text-white transition-all duration-300 group relative"
+              aria-label="Скопіювати посилання"
+            >
+              <svg id="copy-icon" class="w-5 h-5 flex-shrink-0 transition-opacity duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+              </svg>
+              <svg id="check-icon" class="w-5 h-5 flex-shrink-0 transition-opacity duration-200 opacity-0 absolute left-3 sm:left-2 md:left-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              </svg>
+              <span class="sm:hidden text-sm font-medium" id="copy-text">Скопіювати посилання</span>
+              
+              <!-- Desktop tooltip -->
+              <div id="copy-tooltip" class="hidden sm:block absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 pointer-events-none transition-opacity duration-200 whitespace-nowrap">
+                Скопійовано!
+              </div>
+            </button>
           </div>
         </div>
       </div>
-
-        <!-- Back to News -->
-        
-      </div>
     </footer>
+  </div>
   </article>
 </Layout>
+
+<script>
+  // Copy link functionality with modern API and improved UX
+  document.addEventListener('DOMContentLoaded', function() {
+    const copyBtn = document.getElementById('copy-link-btn');
+    const copyText = document.getElementById('copy-text');
+    const copyIcon = document.getElementById('copy-icon');
+    const checkIcon = document.getElementById('check-icon');
+    const tooltip = document.getElementById('copy-tooltip');
+    
+    if (copyBtn) {
+      copyBtn.addEventListener('click', async function() {
+        const url = window.location.href;
+        
+        try {
+          // Use modern Clipboard API if available
+          if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(url);
+            showSuccessFeedback();
+          } else {
+            // Fallback for non-secure contexts or older browsers
+            await fallbackCopyToClipboard(url);
+            showSuccessFeedback();
+          }
+        } catch (err) {
+          console.error('Failed to copy link:', err);
+          showErrorFeedback();
+        }
+      });
+    }
+    
+    function showSuccessFeedback() {
+      // Show success state
+      if (copyIcon && checkIcon) {
+        copyIcon.style.opacity = '0';
+        checkIcon.style.opacity = '1';
+      }
+      
+      // Mobile text feedback
+      if (copyText) {
+        copyText.textContent = 'Скопійовано!';
+      }
+      
+      // Desktop tooltip feedback
+      if (tooltip) {
+        tooltip.style.opacity = '1';
+      }
+      
+      // Reset after 2 seconds
+      setTimeout(() => {
+        resetFeedback();
+      }, 2000);
+    }
+    
+    function showErrorFeedback() {
+      if (copyText) {
+        copyText.textContent = 'Помилка копіювання';
+      }
+      
+      setTimeout(() => {
+        resetFeedback();
+      }, 2000);
+    }
+    
+    function resetFeedback() {
+      if (copyIcon && checkIcon) {
+        copyIcon.style.opacity = '1';
+        checkIcon.style.opacity = '0';
+      }
+      
+      if (copyText) {
+        copyText.textContent = 'Скопіювати посилання';
+      }
+      
+      if (tooltip) {
+        tooltip.style.opacity = '0';
+      }
+    }
+    
+    // Modern fallback function without deprecated methods
+    async function fallbackCopyToClipboard(text) {
+      return new Promise((resolve, reject) => {
+        // Create a temporary textarea element
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.top = '-9999px';
+        textArea.style.left = '-9999px';
+        textArea.setAttribute('readonly', '');
+        textArea.style.opacity = '0';
+        
+        document.body.appendChild(textArea);
+        
+        try {
+          // Select the text
+          textArea.select();
+          textArea.setSelectionRange(0, text.length);
+          
+          // Try to copy using the older API
+          const successful = document.execCommand('copy');
+          document.body.removeChild(textArea);
+          
+          if (successful) {
+            resolve(undefined);
+          } else {
+            reject(new Error('execCommand failed'));
+          }
+        } catch (err) {
+          document.body.removeChild(textArea);
+          reject(err);
+        }
+      });
+    }
+  });
+</script>

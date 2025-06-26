@@ -26,56 +26,59 @@ function formatDate(dateString: string) {
 
 <section class="bs-container bs-mt-lg">
   <!-- Background -->
-<div class="bg-bs-surface-2 rounded-2xl p-8 md:p-12 relative overflow-hidden">
+<div class="bg-bs-surface-2 rounded-2xl p-4 sm:p-6 md:p-8 lg:p-12 relative overflow-hidden">
     <!-- Content -->
     <div class="relative z-10">
       <!-- Header -->
-      <header class="text-center mb-12">
-        <h1 class="bs-h1 text-bs-surface-3">Новини</h1>
-        <p class="bs-body-text text-bs-surface-3 mt-4 max-w-2xl mx-auto text-xl">
+      <header class="text-center mb-8 sm:mb-10 md:mb-12">
+        <h1 class="bs-h1 text-bs-surface-3 text-2xl sm:text-3xl md:text-4xl lg:text-5xl">Новини</h1>
+        <p class="bs-body-text text-bs-surface-3 mt-2 sm:mt-3 md:mt-4 max-w-2xl mx-auto text-base sm:text-lg md:text-xl px-4">
           Останні новини про нашу волонтерську діяльність та допомогу на деокупованих територіях
         </p>
       </header>
 
       <!-- Posts Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+      <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
       {allPosts.map((post: any) => (
-        <article class="bg-bs-surface-3 border-bs-surface-2 rounded-xl overflow-hidden hover:shadow-lg transition-shadow">
+        <article class="bg-bs-surface-3 border-bs-surface-2 rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
           <a href={`/posts/${post.slug}`} class="block">
             {/* Post Image */}
             {post.background_image && (
-              <div class="relative h-64 overflow-hidden">
+              <div class="relative h-48 sm:h-56 md:h-64 overflow-hidden">
                 <Image 
                   src={post.background_image}
                   alt={post.background_image_alt}
                   width={400}
                   height={192}
-                  class="w-full h-full object-cover"
+                  class="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                   loading="lazy"
                 />
               </div>
             )}
             
             {/* Post Content */}
-            <div class="p-6">
+            <div class="p-4 sm:p-5 md:p-6">
               {/* Date */}
-              <time class="text-sm text-bs-foreground-light mb-2 block">
+              <time class="text-xs sm:text-sm text-bs-foreground-light mb-2 block font-medium">
                 {formatDate(post.date)}
               </time>
               
               {/* Title */}
-              <h2 class="bs-h3 mb-3 line-clamp-2 hover:text-bs-primary transition-colors">
+              <h2 class="text-lg sm:text-xl md:text-2xl font-semibold mb-2 sm:mb-3 line-clamp-2 hover:text-bs-primary transition-colors leading-tight">
                 {post.title}
               </h2>
               
               {/* Content Preview */}
-              <p class="bs-body-text text-bs-foreground-light mb-4 line-clamp-3">
+              <p class="text-sm sm:text-base text-bs-foreground-light mb-3 sm:mb-4 line-clamp-3 leading-relaxed">
                 {truncateContent(post.content)}
               </p>
               
               {/* Read More Link */}
-              <span class="bs-btn-link text-bs-primary hover:underline text-bs-foreground-yellow">
+              <span class="inline-flex items-center text-sm sm:text-base font-medium text-bs-primary hover:underline text-bs-foreground-yellow transition-colors">
                 {post.cta}
+                <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
               </span>
             </div>
           </a>
@@ -85,10 +88,18 @@ function formatDate(dateString: string) {
     
     {/* Empty State */}
     {allPosts.length === 0 && (
-      <div class="text-center py-12">
-        <p class="bs-body-text text-bs-foreground-light">
-          Новини скоро з'являться
-        </p>
+      <div class="text-center py-8 sm:py-10 md:py-12">
+        <div class="max-w-md mx-auto px-4">
+          <div class="bg-bs-surface-3 rounded-lg p-6 sm:p-8">
+            <svg class="mx-auto h-12 w-12 text-bs-foreground-light mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+            </svg>
+            <h3 class="text-lg sm:text-xl font-semibold text-bs-surface-3 mb-2">Поки немає новин</h3>
+            <p class="text-sm sm:text-base text-bs-foreground-light">
+              Новини скоро з'являться. Слідкуйте за оновленнями!
+            </p>
+          </div>
+        </div>
       </div>
     )}
     </div>
@@ -108,5 +119,42 @@ function formatDate(dateString: string) {
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+
+  /* Enhanced mobile styles */
+  @media (max-width: 640px) {
+    .bs-container {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+    
+    article {
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    }
+    
+    article:hover {
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+  }
+
+  /* Improved focus styles for accessibility */
+  a:focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+    border-radius: 0.75rem;
+  }
+
+  /* Smooth transitions */
+  article {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    article,
+    .transition-all,
+    .transition-transform,
+    .transition-colors {
+      transition: none;
+    }
   }
 </style>

@@ -5,38 +5,38 @@ import Image from 'astro/components/Image.astro'
 
 <section class="bs-container bs-mt-lg" id="about">
   <!-- Background -->
-  <div class=" p-8 md:p-12 relative overflow-hidden ">
+  <div class="p-4 sm:p-6 md:p-8 lg:p-12 relative overflow-hidden">
     <!-- Content -->
-    <div class="relative z-10 bg-bs-surface-2 rounded-2xl pt-10 pr-10 pl-10">
+    <div class="relative z-10 bg-bs-surface-2 rounded-2xl p-4 sm:p-6 md:p-8 lg:p-10">
       <!-- Header -->
-      <div class="text-center mb-12 text-bs-surface-1">
-        <h1 class="bs-h1 mb-6">{about.title}</h1>
-        <p class="bs-body-text text-xl text-bs-surface-3 max-w-3xl mx-auto">
+      <div class="text-center mb-8 sm:mb-10 md:mb-12 text-bs-surface-1">
+        <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">{about.title}</h1>
+        <p class="text-base sm:text-lg md:text-xl text-bs-surface-3 max-w-3xl mx-auto leading-relaxed px-4">
           {about.preview}
         </p>
       </div>
 
       <!-- Main Content -->
-      <div class="grid lg:grid-cols-5 gap-8 items-start">
+      <div class="grid lg:grid-cols-5 gap-6 md:gap-8 items-start">
         
         <!-- Content Section -->
         <div class="lg:col-span-3">
-          <div class="prose prose-xl max-w-none bg-bs-surface-3 rounded-2xl p-6">
+          <div class="prose prose-sm sm:prose-base md:prose-lg lg:prose-xl max-w-none bg-bs-surface-3 rounded-2xl p-4 sm:p-5 md:p-6">
             <div set:html={about.content} class="
-              text-lg font-medium text-bs-surface-2
+              text-sm sm:text-base md:text-lg font-medium text-bs-surface-2
               [&_strong]:text-bs-surface-2
               [&_strong]:font-bold 
-              [&_strong]:text-2xl
-              [&_ul]:space-y-3
+              [&_strong]:text-lg sm:[&_strong]:text-xl md:[&_strong]:text-2xl
+              [&_ul]:space-y-2 sm:[&_ul]:space-y-3
               [&_span]:text-bs-foreground-yellow
               [&_li]:leading-relaxed
-              [&_li]:text-lg
+              [&_li]:text-sm sm:[&_li]:text-base md:[&_li]:text-lg
               [&_li]:font-medium
               [&_hr]:border-bs-surface-2
-              [&_hr]:my-8
+              [&_hr]:my-4 sm:[&_hr]:my-6 md:[&_hr]:my-8
               [&_p]:leading-relaxed
-              [&_p]:mb-6
-              [&_p]:text-lg
+              [&_p]:mb-4 sm:[&_p]:mb-5 md:[&_p]:mb-6
+              [&_p]:text-sm sm:[&_p]:text-base md:[&_p]:text-lg
               [&_p]:font-medium
               [&_p]:text-bs-surface-3
             " />
@@ -44,8 +44,8 @@ import Image from 'astro/components/Image.astro'
         </div>
 
         <!-- Image Section -->
-        <div class="lg:col-span-2">
-          <div class="sticky top-8">
+        <div class="lg:col-span-2 mt-6 lg:mt-0">
+          <div class="lg:sticky lg:top-8 space-y-4 sm:space-y-5">
             <div class="relative overflow-hidden rounded-xl shadow-lg">
               <Image 
                 src={about.image} 
@@ -53,6 +53,7 @@ import Image from 'astro/components/Image.astro'
                 width={600}
                 height={400}
                 class="w-full h-auto object-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 40vw"
                 loading="eager"
               />
               <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
@@ -63,7 +64,8 @@ import Image from 'astro/components/Image.astro'
                 alt={about.image_alt}
                 width={600}
                 height={400}
-                class="w-full h-auto object-cover pt-5"
+                class="w-full h-auto object-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 40vw"
                 loading="eager"
               />
               <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
@@ -73,33 +75,33 @@ import Image from 'astro/components/Image.astro'
       </div>
 
       <!-- Stats Section -->
-      <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="mt-8 sm:mt-10 md:mt-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
         
         <!-- Stat 1 -->
-        <div class="text-center p-6 bg-bs-surface-3 rounded-xl border border-bs-surface-3">
-          <div class="text-4xl font-bold text-bs-foreground-yellow mb-2">100+</div>
-          <div class="text-bs-foreground-dark">Локацій отримали допомогу</div>
+        <div class="text-center p-4 sm:p-5 md:p-6 bg-bs-surface-3 rounded-xl border border-bs-surface-3">
+          <div class="text-2xl sm:text-3xl md:text-4xl font-bold text-bs-foreground-yellow mb-2">100+</div>
+          <div class="text-sm sm:text-base text-bs-foreground-dark">Локацій отримали допомогу</div>
         </div>
 
         <!-- Stat 2 -->
-        <div class="text-center p-6 bg-bs-surface-3 rounded-xl border border-bs-surface-3">
-          <div class="text-4xl font-bold  text-bs-foreground-yellow mb-2">24.02</div>
-          <div class="text-bs-foreground-dark">Початок нашої діяльності</div>
+        <div class="text-center p-4 sm:p-5 md:p-6 bg-bs-surface-3 rounded-xl border border-bs-surface-3">
+          <div class="text-2xl sm:text-3xl md:text-4xl font-bold text-bs-foreground-yellow mb-2">24.02</div>
+          <div class="text-sm sm:text-base text-bs-foreground-dark">Початок нашої діяльності</div>
         </div>
 
         <!-- Stat 3 -->
-        <div class="text-center p-10 bg-bs-surface-3 rounded-xl border border-bs-surface-3">
-          <div class="text-4xl font-bold text-bs-foreground-yellow mb-2">6+</div>
-          <div class="text-bs-foreground-dark">Напрямків роботи</div>
+        <div class="text-center p-4 sm:p-5 md:p-6 lg:p-10 bg-bs-surface-3 rounded-xl border border-bs-surface-3 sm:col-span-2 md:col-span-1">
+          <div class="text-2xl sm:text-3xl md:text-4xl font-bold text-bs-foreground-yellow mb-2">6+</div>
+          <div class="text-sm sm:text-base text-bs-foreground-dark">Напрямків роботи</div>
         </div>
 
       </div>
 
       <!-- Call to Action -->
-      <div class="mt-12 pb-6 text-center">
-        <div class="bg-bs-surface-3 rounded-xl p-8 border border-bs-surface-3">
-          <h3 class="bs-h3 mb-4 text-bs-surface-2">Готові приєднатися?</h3>
-          <p class="bs-body-text text-bs-surface-2 mb-6 max-w-2xl mx-auto">
+      <div class="mt-8 sm:mt-10 md:mt-12 pb-4 sm:pb-6 text-center">
+        <div class="bg-bs-surface-3 rounded-xl p-4 sm:p-6 md:p-8 border border-bs-surface-3">
+          <h3 class="text-xl sm:text-2xl md:text-3xl font-semibold mb-3 sm:mb-4 text-bs-surface-2">Готові приєднатися?</h3>
+          <p class="text-sm sm:text-base md:text-lg text-bs-surface-2 mb-4 sm:mb-6 max-w-2xl mx-auto leading-relaxed px-4">
             Ми завжди раді новим волонтерам, які готові допомогти нашій країні
           </p>
           <a href="/#contact" class="bs-btn inline-block">

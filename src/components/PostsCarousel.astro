@@ -78,25 +78,27 @@ const posts: Post[] = rawPosts
   <!-- Slides -->
   <div class="js-fc-swiper swiper select-none bs-mt-md">
     <div class="swiper-wrapper">
-
       { posts.map( item =>
 
       // Slides
 
       <div class="swiper-slide bs border border-bs-surface-3 rounded-xl overflow-hidden !h-auto">
 
-        <a href={item.slug ? `/posts/${item.slug}` : '#'} class="block" onclick="event.stopPropagation()">
+        <a href={item.slug ? `/posts/${item.slug}` : '#'} class="block" aria-label={item.title}>
           <figure class="flex flex-col gap-6 isolate min-h-[50svh] md:min-h-[40rem] h-full">
 
-            {/* BG image */}
-            <Image src={item.background_image} alt={item.image_alt ?? ""}  loading="lazy"
+            {/* Post background image */}
+            <Image src={item.background_image} alt={item.background_image_alt} loading="lazy"
               class="rounded-xl overflow-hidden w-full h-full object-cover object-left absolute inset-0"
               height="1024" width="768" 
               loading="eager"
               />
 
-            {/* Gradient mask */}
+            {/* Gradient mask (desktop)*/}
             <div class="hidden md:block absolute rounded-xl overflow-hidden w-full h-full object-cover object-left inset-0 bg-gradient-to-r from-bs-surface-3 via-bs-surface-3/70 to-transparent" style="--tw-gradient-from-position: 0%; --tw-gradient-to-position: 90%;"></div>
+
+            {/* Gradient mask (mobile)*/}
+            <div class="md:hidden absolute rounded-xl overflow-hidden w-full h-full object-cover object-left inset-0 bg-gradient-to-r from-bs-surface-3 via-bs-surface-3/70 to-transparent" style="--tw-gradient-from-position: 0%; --tw-gradient-to-position: 90%;"></div>
 
             {/* Content */}
             <figcaption class="z-10 p-6 sm:p-10 md:p-20 max-w-xl flex flex-col gap-6 h-full">
@@ -104,7 +106,7 @@ const posts: Post[] = rawPosts
               {/* Title */}
               <h2 class="bs-h2" set:html={ item.title } />
 
-              {/* Intro */}
+              {/* Text preview */}
               <div class="bs-body-text text-pretty flex-1 mt-10">
                 {
                 (() => {
@@ -116,8 +118,8 @@ const posts: Post[] = rawPosts
               </div>
 
               {/* Cta */}
-              <a href={item.slug ? `/posts/${item.slug}` : '#'} class="bs-btn inline-block self-start bs-mt-sm" onclick="event.stopPropagation()">
-                { item.cta }
+              <a href={item.slug ? `/posts/${item.slug}` : '#'} class="bs-btn inline-block self-start bs-mt-sm">
+                {item.cta}
               </a>
 
             </figcaption>
