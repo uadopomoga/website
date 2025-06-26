@@ -9,7 +9,14 @@ import about from '../data/about.json'
 import navigation from '../data/navigation.json'
 ---
 
-<Layout title={`Про нас - ${global_settings.title}`} description="Дізнайтеся більше про нашу волонтерську організацію та місію допомоги на деокупованих територіях України">
+<Layout 
+  title={`Про нас - ${global_settings.title}`} 
+  description="Дізнайтеся більше про нашу волонтерську організацію та місію допомоги на деокупованих територіях України"
+  theme_color={global_settings.theme_color}
+  image={about.image}
+  imageAlt={about.image_alt}
+  url={Astro.url.href}
+>
     <AboutComponent about></AboutComponent>
     <Footer settings={global_settings} navigation={navigation}/>
 </Layout>

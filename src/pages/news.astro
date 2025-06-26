@@ -7,7 +7,12 @@ import global_settings from '../data/global_settings.json'
 import navigation from '../data/navigation.json'
 ---
 
-<Layout title="Новини - UAdopomoga" description="Останні новини про волонтерську діяльність та допомогу на деокупованих територіях України">
+<Layout 
+  title="Новини - UAdopomoga" 
+  description="Останні новини про волонтерську діяльність та допомогу на деокупованих територіях України"
+  theme_color={global_settings.theme_color}
+  url={Astro.url.href}
+>
 	<NewsComponent />
     <Footer settings={global_settings} navigation={navigation}/>
 </Layout>

@@ -1,7 +1,8 @@
 {
   "title": "UAdopomoga",
   "description": "Формуємо культуру волонтерства та взаємодопомоги в Україні",
-  "social_image": "",
+  "social_image": "/favicon.png",
+  "social_image_alt": "UAdopomoga",
   "base_url": "uadopomoga.com.ua",
   "demo": {
     "title": "Volunteers Kharkiv",

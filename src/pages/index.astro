@@ -17,7 +17,14 @@ import navigation from '../data/navigation.json'
 
 ---
 
-<Layout title={global_settings.title} description={global_settings.description} theme_color={global_settings.theme_color}>
+<Layout 
+  title={global_settings.title} 
+  description={global_settings.description} 
+  theme_color={global_settings.theme_color}
+  url={Astro.url.href}
+  image={global_settings.social_image}
+  image_alt={global_settings.social_image_alt}
+>
 
 	<Home title={home_content.title} content={home_content.content} main_fundraise={global_settings.main_fundraise}/>
 

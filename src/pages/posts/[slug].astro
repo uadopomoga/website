@@ -54,9 +54,25 @@ const formattedDate = formatDate(post.date);
 
 // Get the current URL for sharing (build the full URL)
 const currentUrl = new URL(`/posts/${post.slug}`, Astro.site || 'https://uadopomoga.com').href;
+
+// Prepare social sharing data
+const socialTitle = `${post.title} - ${global_settings.title}`;
+const postContent = post.isMdPost ? (post as any).body : (post as any).content;
+const socialDescription = (post as any).preview || 
+                         (postContent ? postContent.replace(/<[^>]*>/g, '').substring(0, 160) + '...' : '') || 
+                         global_settings.description;
+const socialImage = post.background_image || undefined;
+const socialImageAlt = post.background_image_alt || post.title;
 ---
 
-<Layout title={global_settings.title}>
+<Layout 
+  title={socialTitle}
+  description={socialDescription}
+  theme_color={global_settings.theme_color}
+  image={socialImage}
+  imageAlt={socialImageAlt}
+  url={currentUrl}
+>
   <article class="bs-container rounded-2xl p-4 sm:p-8 md:p-16 bg-bs-surface-2">
     <!-- Back to News -->
     <div class="mb-6 md:mb-8">
@@ -210,7 +226,6 @@ const currentUrl = new URL(`/posts/${post.slug}`, Astro.site || 'https://uadopom
 </Layout>
 
 <script>
-  // Copy link functionality with modern API and improved UX
   document.addEventListener('DOMContentLoaded', function() {
     const copyBtn = document.getElementById('copy-link-btn');
     const copyText = document.getElementById('copy-text');
@@ -223,40 +238,34 @@ const currentUrl = new URL(`/posts/${post.slug}`, Astro.site || 'https://uadopom
         const url = window.location.href;
         
         try {
-          // Use modern Clipboard API if available
           if (navigator.clipboard && window.isSecureContext) {
             await navigator.clipboard.writeText(url);
             showSuccessFeedback();
           } else {
-            // Fallback for non-secure contexts or older browsers
-            await fallbackCopyToClipboard(url);
+            await copyToClipboardFallback(url);
             showSuccessFeedback();
           }
         } catch (err) {
           console.error('Failed to copy link:', err);
-          showErrorFeedback();
+          showManualCopyFeedback(url);
         }
       });
     }
     
     function showSuccessFeedback() {
-      // Show success state
       if (copyIcon && checkIcon) {
         copyIcon.style.opacity = '0';
         checkIcon.style.opacity = '1';
       }
       
-      // Mobile text feedback
       if (copyText) {
         copyText.textContent = 'Скопійовано!';
       }
       
-      // Desktop tooltip feedback
       if (tooltip) {
         tooltip.style.opacity = '1';
       }
       
-      // Reset after 2 seconds
       setTimeout(() => {
         resetFeedback();
       }, 2000);
@@ -270,6 +279,34 @@ const currentUrl = new URL(`/posts/${post.slug}`, Astro.site || 'https://uadopom
       setTimeout(() => {
         resetFeedback();
       }, 2000);
+    }
+    
+    function showManualCopyFeedback(url: string) {
+      if (copyText) {
+        copyText.textContent = 'Ctrl+C для копіювання';
+      }
+      try {
+        const selection = window.getSelection();
+        const range = document.createRange();
+        const span = document.createElement('span');
+        span.textContent = url;
+        span.style.position = 'fixed';
+        span.style.top = '-9999px';
+        document.body.appendChild(span);
+        
+        range.selectNode(span);
+        selection?.removeAllRanges();
+        selection?.addRange(range);
+        
+        setTimeout(() => {
+          document.body.removeChild(span);
+          resetFeedback();
+        }, 3000);
+      } catch {
+        setTimeout(() => {
+          resetFeedback();
+        }, 2000);
+      }
     }
     
     function resetFeedback() {
@@ -287,36 +324,33 @@ const currentUrl = new URL(`/posts/${post.slug}`, Astro.site || 'https://uadopom
       }
     }
     
-    // Modern fallback function without deprecated methods
-    async function fallbackCopyToClipboard(text) {
+    async function copyToClipboardFallback(text: string): Promise<void> {
       return new Promise((resolve, reject) => {
-        // Create a temporary textarea element
-        const textArea = document.createElement('textarea');
-        textArea.value = text;
-        textArea.style.position = 'fixed';
-        textArea.style.top = '-9999px';
-        textArea.style.left = '-9999px';
-        textArea.setAttribute('readonly', '');
-        textArea.style.opacity = '0';
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = text;
+        input.style.position = 'fixed';
+        input.style.top = '-9999px';
+        input.style.left = '-9999px';
+        input.style.opacity = '0';
+        input.setAttribute('readonly', '');
         
-        document.body.appendChild(textArea);
+        document.body.appendChild(input);
         
         try {
-          // Select the text
-          textArea.select();
-          textArea.setSelectionRange(0, text.length);
-          
-          // Try to copy using the older API
+          input.focus();
+          input.select();
+          input.setSelectionRange(0, text.length);
           const successful = document.execCommand('copy');
-          document.body.removeChild(textArea);
+          document.body.removeChild(input);
           
           if (successful) {
-            resolve(undefined);
+            resolve();
           } else {
-            reject(new Error('execCommand failed'));
+            reject(new Error('Copy operation failed'));
           }
         } catch (err) {
-          document.body.removeChild(textArea);
+          document.body.removeChild(input);
           reject(err);
         }
       });
