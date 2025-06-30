@@ -27,6 +27,17 @@ const contentType = isArticle ? 'article' : 'website'
     <title>{title}</title>
 
     <link rel="icon" type="image/png" href="/favicon.png" />
+    
+    <!-- Font preload and display optimization -->
+    <link rel="preload" href="/src/assets/fonts/Inter-Regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/src/assets/fonts/Inter-SemiBold.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/src/assets/fonts/InterDisplay-Regular.woff2" as="font" type="font/woff2" crossorigin />
+    
+    <!-- DNS prefetch for external resources -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="//www.youtube.com" />
+    <link rel="dns-prefetch" href="//www.facebook.com" />
+    <link rel="dns-prefetch" href="//telegram.me" />
 
     <meta name="theme-color" content='#18181b' />
 
@@ -60,7 +71,7 @@ const contentType = isArticle ? 'article' : 'website'
     
     <meta name="author" content="UAdopomoga" />
     <meta name="robots" content="index, follow" />
-    <link rel="canonical" href={url} />
+    <link rel="canonical" href="dev.uadopomoga.com.ua"/>
 
     <!-- Structured Data for Articles -->
     {isArticle && (
@@ -182,6 +193,29 @@ const contentType = isArticle ? 'article' : 'website'
 				}
 			});
 		</script> -->
+		
+		<!-- Performance monitoring -->
+		<script is:inline defer>
+			// Basic performance monitoring
+			window.addEventListener('load', function() {
+				if ('performance' in window) {
+					const perfData = performance.getEntriesByType('navigation')[0];
+					console.log('Page Load Time:', perfData.loadEventEnd - perfData.fetchStart, 'ms');
+					
+					// Monitor LCP
+					if ('PerformanceObserver' in window) {
+						const observer = new PerformanceObserver((list) => {
+							for (const entry of list.getEntries()) {
+								if (entry.entryType === 'largest-contentful-paint') {
+									console.log('LCP:', entry.startTime, 'ms');
+								}
+							}
+						});
+						observer.observe({entryTypes: ['largest-contentful-paint']});
+					}
+				}
+			});
+		</script>
 	</body>
 </html>
 

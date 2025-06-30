@@ -39,7 +39,6 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 
-// Function to format date
 function formatDate(dateString: string | Date) {
   const date = typeof dateString === 'string' ? new Date(dateString) : dateString;
   return date.toLocaleDateString('uk-UA', {
@@ -51,9 +50,9 @@ function formatDate(dateString: string | Date) {
 
 const formattedDate = formatDate(post.date);
 
-const currentUrl = new URL(`/posts/${post.slug}`, Astro.site || 'https://uadopomoga.com').href;
+const currentUrl = new URL(`/posts/${post.slug}`, Astro.site || 'https://dev.uadopomoga.com.ua').href;
 
-const socialTitle = `${post.title} - ${global_settings.title}`;
+const socialTitle = global_settings.title;
 const postContent = post.isMdPost ? (post as any).body : (post as any).content;
 const socialDescription = (post as any).preview || 
                          (postContent ? postContent.replace(/<[^>]*>/g, '').substring(0, 160) + '...' : '') || 
@@ -108,6 +107,8 @@ const publishedTime = new Date(post.date).toISOString();
             class="w-full aspect-video object-cover rounded-xl"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
             loading="eager"
+            format="webp"
+            quality={80}
           />
         </div>
       )}
@@ -153,6 +154,8 @@ const publishedTime = new Date(post.date).toISOString();
                   class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   loading="lazy"
+                  format="webp"
+                  quality={75}
                 />
               </div>
             ))}
@@ -187,7 +190,7 @@ const publishedTime = new Date(post.date).toISOString();
             
             <!-- Telegram Share -->
             <a 
-              href={`https://telegram.me/share/url?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(post.title)}`}
+              href={`https://telegram.me/share/url?url=${encodeURIComponent(currentUrl)}`}
               target="_blank"
               rel="noopener noreferrer"
               class="flex items-center gap-3 p-3 sm:p-2 md:p-3 rounded-xl sm:rounded-full bg-bs-surface-3 hover:bg-[#229ED9] hover:text-white transition-all duration-300 group"
@@ -225,7 +228,7 @@ const publishedTime = new Date(post.date).toISOString();
   </article>
 </Layout>
 
-<script is:inline>
+<script is:inline defer>
   // Copy link functionality - production-ready version
   (function() {
     function initCopyButton() {

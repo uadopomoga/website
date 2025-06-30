@@ -1,9 +1,57 @@
 @import 'tailwindcss';
 
+/* Font faces with display swap for better performance */
+@font-face {
+  font-family: 'Inter';
+  src: url('/src/assets/fonts/Inter-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/src/assets/fonts/Inter-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/src/assets/fonts/Inter-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'InterDisplay';
+  src: url('/src/assets/fonts/InterDisplay-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'InterDisplay';
+  src: url('/src/assets/fonts/InterDisplay-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'InterDisplay';
+  src: url('/src/assets/fonts/InterDisplay-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
-  --font-display:
-    var(--font-inter-display), 'ui-sans-serif', 'system-ui', 'sans-serif';
-  --font-body: var(--font-inter), 'ui-sans-serif', 'system-ui', 'sans-serif';
+  --font-display: 'InterDisplay', 'ui-sans-serif', 'system-ui', 'sans-serif';
+  --font-body: 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif';
 
   --color-bs-surface-0: #121212;
   --color-bs-surface-1: #34322a;

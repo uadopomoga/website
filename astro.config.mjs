@@ -9,6 +9,29 @@ import cloudflare from '@astrojs/cloudflare';
 export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
+    build: {
+      cssCodeSplit: true,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vendor: ['swiper'],
+          },
+        },
+      },
+    },
+  },
+
+  build: {
+    inlineStylesheets: 'auto',
+  },
+
+  image: {
+    service: {
+      entrypoint: 'astro/assets/services/sharp',
+      config: {
+        limitInputPixels: false,
+      },
+    },
   },
 
   experimental: {
