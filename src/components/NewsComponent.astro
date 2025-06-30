@@ -2,18 +2,15 @@
 import { getAllPosts } from '../utils/get_posts.mjs'
 import Image from 'astro/components/Image.astro'
 
-// Get all posts (both markdown and JSON)
 const allPosts = await getAllPosts()
 
-// Function to truncate content for preview
 function truncateContent(content: string, maxLength: number = 150) {
-  const textContent = content.replace(/<[^>]*>/g, '') // Remove HTML tags
+  const textContent = content.replace(/<[^>]*>/g, '') 
   return textContent.length > maxLength 
     ? textContent.substring(0, maxLength) + '...' 
     : textContent
 }
 
-// Function to format date
 function formatDate(dateString: string) {
   const date = new Date(dateString)
   return date.toLocaleDateString('uk-UA', {
@@ -120,8 +117,6 @@ function formatDate(dateString: string) {
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-
-  /* Enhanced mobile styles */
   @media (max-width: 640px) {
     .bs-container {
       padding-left: 1rem;
@@ -136,15 +131,11 @@ function formatDate(dateString: string) {
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     }
   }
-
-  /* Improved focus styles for accessibility */
   a:focus-visible {
     outline: 2px solid #3b82f6;
     outline-offset: 2px;
     border-radius: 0.75rem;
   }
-
-  /* Smooth transitions */
   article {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }

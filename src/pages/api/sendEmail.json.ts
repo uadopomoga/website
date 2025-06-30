@@ -116,8 +116,8 @@ export const POST: APIRoute = async ({ request, locals }) => {
     }
 
     const sendResend = await resend.emails.send({
-      from: fromEmail, // Using environment variable
-      to: toEmail, // Using environment variable
+      from: fromEmail,
+      to: toEmail,
       subject: `Guest ${name} from UAdopomoga`,
       html: `
         <h2>New message from UAdopomoga</h2>
@@ -134,7 +134,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
       error: sendResend.error,
     });
 
-    // If the message was sent successfully, return a 200 response
     if (sendResend.data) {
       console.log('Email sent successfully');
       return new Response(

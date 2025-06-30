@@ -45,38 +45,8 @@ const {settings} = Astro.props
 
 </section>
 
-<script>
-  // Suppress YouTube tracking console errors that don't affect functionality
-  if (typeof console !== 'undefined') {
-    const originalError = console.error;
-    const originalWarn = console.warn;
-    
-    console.error = function(...args) {
-      const message = args.join(' ');
-      // Filter out YouTube tracking errors
-      if (message.includes('youtube') && 
-          (message.includes('ERR_BLOCKED_BY_CLIENT') || 
-           message.includes('generate_204') || 
-           message.includes('log_event'))) {
-        return;
-      }
-      originalError.apply(console, args);
-    };
-    
-    console.warn = function(...args) {
-      const message = args.join(' ');
-      // Filter out YouTube tracking warnings
-      if (message.includes('youtube') && message.includes('ERR_BLOCKED_BY_CLIENT')) {
-        return;
-      }
-      originalWarn.apply(console, args);
-    };
-  }
-</script>
-
 <!-- Lazy YouTube Loading Script -->
 <script is:inline defer>
-  // Lazy load YouTube videos for better performance
   document.addEventListener('DOMContentLoaded', function() {
     const youtubeElements = document.querySelectorAll('.youtube-placeholder');
     
@@ -91,8 +61,6 @@ const {settings} = Astro.props
           iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
           iframe.allowFullscreen = true;
           iframe.referrerPolicy = 'strict-origin-when-cross-origin';
-          
-          // Replace placeholder with iframe
           this.parentNode.replaceChild(iframe, this);
         }
       });

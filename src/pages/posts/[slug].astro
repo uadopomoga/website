@@ -6,16 +6,12 @@ import posts from '../../data/posts/old_posts.json'
 import global_settings from '../../data/global_settings.json'
 
 export async function getStaticPaths() {
-  // Get markdown posts from content collection
   const mdPosts = await getCollection('posts');
-  
-  // Create paths for markdown posts
   const mdPaths = mdPosts.map(post => ({
     params: { slug: post.slug },
     props: { post: { ...post.data, slug: post.slug, isMdPost: true, body: post.body } },
   }));
 
-  // Create slugs for old JSON posts and return static paths
   const postsWithSlugs = posts.map((post, index) => ({
     ...post,
     slug: post.url 
@@ -229,7 +225,6 @@ const publishedTime = new Date(post.date).toISOString();
 </Layout>
 
 <script is:inline defer>
-  // Copy link functionality - production-ready version
   (function() {
     function initCopyButton() {
       const copyBtn = document.getElementById('copy-link-btn');
@@ -259,23 +254,19 @@ const publishedTime = new Date(post.date).toISOString();
           });
       }
       
-      // Remove existing listeners to prevent duplicates
       copyBtn.removeEventListener('click', handleCopyClick);
       copyBtn.addEventListener('click', handleCopyClick);
       
       function copyToClipboard(text) {
-        // Try modern clipboard API first
         if (navigator.clipboard && window.isSecureContext) {
           return navigator.clipboard.writeText(text);
         } else {
-          // Fallback for older browsers or non-secure contexts
           return copyToClipboardFallback(text);
         }
       }
       
       function copyToClipboardFallback(text) {
         return new Promise(function(resolve, reject) {
-          // Create temporary input element
           const input = document.createElement('input');
           input.type = 'text';
           input.value = text;
@@ -312,14 +303,12 @@ const publishedTime = new Date(post.date).toISOString();
         const checkIcon = document.getElementById('check-icon');
         const copyText = document.getElementById('copy-text');
         const tooltip = document.getElementById('copy-tooltip');
-        
-        // Show success state
+  
         if (copyIcon) copyIcon.style.opacity = '0';
         if (checkIcon) checkIcon.style.opacity = '1';
         if (copyText) copyText.textContent = 'Скопійовано!';
         if (tooltip) tooltip.style.opacity = '1';
         
-        // Reset after 2 seconds
         setTimeout(resetFeedback, 2000);
       }
       
@@ -327,7 +316,6 @@ const publishedTime = new Date(post.date).toISOString();
         const copyText = document.getElementById('copy-text');
         if (copyText) copyText.textContent = 'Помилка';
         
-        // Reset after 2 seconds
         setTimeout(resetFeedback, 2000);
       }
       
@@ -346,7 +334,6 @@ const publishedTime = new Date(post.date).toISOString();
       return true;
     }
     
-    // Try to initialize immediately
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', function() {
         let attempts = 0;
@@ -363,7 +350,6 @@ const publishedTime = new Date(post.date).toISOString();
         tryInit();
       });
     } else {
-      // DOM is already loaded
       let attempts = 0;
       const maxAttempts = 10;
       

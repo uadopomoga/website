@@ -21,7 +21,7 @@ const {title} = Astro.props
     <!-- Mobile Navigation -->
       <!-- Logo button -->
       <div class="md:hidden flex items-center">
-        <a href="/" class="text-xl sm:text-2xl font-bold text-bs-white active:text-bs-surface-2 transition-colors pt-3">
+        <a href="/" class="text-xl sm:text-2xl text-bs-white active:text-bs-surface-2 transition-colors pt-3">
           {title}
         </a>
       </div>
@@ -43,7 +43,7 @@ const {title} = Astro.props
 
   <!-- Mobile Navigation Links-->
   <nav 
-    class="md:hidden bg-bs-surface-2 border-t border-bs-surface-1 overflow-hidden transition-all duration-300 ease-in-out max-h-0 relative z-40" 
+    class="md:hidden bg-bs-surface-2 overflow-hidden transition-all duration-300 ease-in-out max-h-0 relative z-40" 
     id="mobile-menu"
     aria-hidden="true"
   >
@@ -108,20 +108,16 @@ const {title} = Astro.props
         `;
       }
       
-      // Remove any existing listeners to prevent duplicates
       menuToggle.removeEventListener('click', handleMenuClick);
       
       function handleMenuClick(e) {
         e.preventDefault();
         e.stopPropagation();
-        console.log('Menu button clicked');
         toggleMenu();
       }
       
-      // Add click event listener
       menuToggle.addEventListener('click', handleMenuClick);
       
-      // Close mobile menu when clicking on a link
       const mobileMenuLinks = mobileMenu.querySelectorAll('a');
       mobileMenuLinks.forEach(function(link) {
         link.addEventListener('click', function() {
@@ -129,14 +125,12 @@ const {title} = Astro.props
         });
       });
       
-      // Close menu when clicking outside
       document.addEventListener('click', function(e) {
         if (!menuToggle.contains(e.target) && !mobileMenu.contains(e.target)) {
           closeMenu();
         }
       });
 
-      // Close menu on escape key
       document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape' && menuToggle.getAttribute('aria-expanded') === 'true') {
           closeMenu();
@@ -147,7 +141,6 @@ const {title} = Astro.props
       return true;
     }
     
-    // Try to initialize immediately
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', function() {
         let attempts = 0;
@@ -164,7 +157,6 @@ const {title} = Astro.props
         tryInit();
       });
     } else {
-      // DOM is already loaded
       let attempts = 0;
       const maxAttempts = 10;
       

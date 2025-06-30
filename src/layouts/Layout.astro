@@ -11,10 +11,8 @@ import Header from '../components/Header.astro'
 
 const {title, description, theme_color, image, image_alt, url, isArticle, publishedTime, modifiedTime} = Astro.props
 
-// Default social sharing image
 const defaultImage = bg_image.src
 
-// Determine content type
 const contentType = isArticle ? 'article' : 'website'
 ---
 <html lang="uk">

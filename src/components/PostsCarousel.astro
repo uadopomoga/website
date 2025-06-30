@@ -80,8 +80,6 @@ const posts: Post[] = rawPosts
     <div class="swiper-wrapper">
       { posts.map( item =>
 
-      // Slides
-
       <div class="swiper-slide bs border border-bs-surface-3 rounded-xl overflow-hidden !h-auto">
 
         <a href={item.slug ? `/posts/${item.slug}` : '#'} class="block" aria-label={item.title}>
@@ -175,19 +173,14 @@ const swiper = new Swiper('.js-fc-swiper', {
 
 })
 
-// Add event listeners to buttons
 prev_btn?.addEventListener('click', () => swiper.slidePrev())
 next_btn?.addEventListener('click', () => swiper.slideNext())
 
-// Trigger swiper
 swiper.init?.()
 
 </script>
 
 <style>
-
-/* Show buttons only when in view */
-
 @keyframes show-buttons {
   to { opacity: 1; }
  }
@@ -199,5 +192,4 @@ swiper.init?.()
     animation-timeline: view(20% block);
   }
 }
-
 </style>
