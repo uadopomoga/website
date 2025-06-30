@@ -9,9 +9,7 @@ import logo from '../assets/theme-images/logo.png'
 const {title, content, main_fundraise} = Astro.props
 ---
 
-<!-- Add critical CSS hint -->
 <style>
-  /* Critical styles for above-the-fold content */
   .home-section {
     min-height: 50vh;
     contain: layout style;
@@ -55,9 +53,9 @@ const {title, content, main_fundraise} = Astro.props
     <!-- Call to action -->
     <div class="p-6 sm:p-8 rounded-none border-l-4 border-bs-primary/30 bg-bs-surface-0/5 w-full home-cta">
       <h2 class="bs-h3 mb-4 sm:mb-6 text-lg sm:text-xl lg:text-2xl">Підтримати проект</h2>
-      <p class="bs-body-text mb-6 sm:mb-8 max-w-2xl text-sm sm:text-base">
+      <!-- <p class="bs-body-text mb-6 sm:mb-8 max-w-2xl text-sm sm:text-base">
         Ваша підтримка допомагає нам продовжувати нашу роботу з надання допомоги там, де вона найбільш необхідна.
-      </p>
+      </p> -->
       <a href={main_fundraise} class="bs-btn inline-block text-sm sm:text-base px-4 sm:px-6 py-2 sm:py-3" target="_blank" rel="noopener noreferrer">
         Фінансово підтримати
       </a>
