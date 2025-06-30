@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Allow search engines to crawl all pages
+Disallow:
+
+# Crawl-delay (optional, in seconds)
+Crawl-delay: 1
