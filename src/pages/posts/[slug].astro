@@ -225,110 +225,154 @@ const publishedTime = new Date(post.date).toISOString();
   </article>
 </Layout>
 
-<script>
-  // Copy link functionality - improved and simplified version
-  document.addEventListener('DOMContentLoaded', function() {
-    const copyBtn = document.getElementById('copy-link-btn') as HTMLButtonElement | null;
-    
-    if (!copyBtn) {
-      console.error('Copy button not found');
-      return;
-    }
-    
-    console.log('Copy button found and script initialized');
-    
-    copyBtn.addEventListener('click', async function(e: Event) {
-      e.preventDefault();
-      e.stopPropagation();
+<script is:inline>
+  // Copy link functionality - production-ready version
+  (function() {
+    function initCopyButton() {
+      const copyBtn = document.getElementById('copy-link-btn');
       
-      const url = window.location.href;
-      console.log('Attempting to copy URL:', url);
+      if (!copyBtn) {
+        console.log('Copy button not found, retrying...');
+        return false;
+      }
       
-      try {
+      console.log('Copy button found and script initialized');
+      
+      function handleCopyClick(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const url = window.location.href;
+        console.log('Attempting to copy URL:', url);
+        
+        copyToClipboard(url)
+          .then(function() {
+            console.log('Successfully copied URL');
+            showSuccessFeedback();
+          })
+          .catch(function(err) {
+            console.error('Failed to copy link:', err);
+            showErrorFeedback();
+          });
+      }
+      
+      // Remove existing listeners to prevent duplicates
+      copyBtn.removeEventListener('click', handleCopyClick);
+      copyBtn.addEventListener('click', handleCopyClick);
+      
+      function copyToClipboard(text) {
         // Try modern clipboard API first
         if (navigator.clipboard && window.isSecureContext) {
-          await navigator.clipboard.writeText(url);
-          console.log('Copied with modern API');
+          return navigator.clipboard.writeText(text);
         } else {
           // Fallback for older browsers or non-secure contexts
-          await copyToClipboardFallback(url);
-          console.log('Copied with fallback method');
+          return copyToClipboardFallback(text);
         }
-        showSuccessFeedback();
-      } catch (err) {
-        console.error('Failed to copy link:', err);
-        showErrorFeedback();
       }
-    });
-    
-    function showSuccessFeedback(): void {
-      const copyIcon = document.getElementById('copy-icon');
-      const checkIcon = document.getElementById('check-icon');
-      const copyText = document.getElementById('copy-text');
-      const tooltip = document.getElementById('copy-tooltip');
       
-      // Show success state
-      if (copyIcon) copyIcon.style.opacity = '0';
-      if (checkIcon) checkIcon.style.opacity = '1';
-      if (copyText) copyText.textContent = 'Скопійовано!';
-      if (tooltip) tooltip.style.opacity = '1';
-      
-      // Reset after 2 seconds
-      setTimeout(resetFeedback, 2000);
-    }
-    
-    function showErrorFeedback(): void {
-      const copyText = document.getElementById('copy-text');
-      if (copyText) copyText.textContent = 'Помилка';
-      
-      // Reset after 2 seconds
-      setTimeout(resetFeedback, 2000);
-    }
-    
-    function resetFeedback(): void {
-      const copyIcon = document.getElementById('copy-icon');
-      const checkIcon = document.getElementById('check-icon');
-      const copyText = document.getElementById('copy-text');
-      const tooltip = document.getElementById('copy-tooltip');
-      
-      if (copyIcon) copyIcon.style.opacity = '1';
-      if (checkIcon) checkIcon.style.opacity = '0';
-      if (copyText) copyText.textContent = 'Скопіювати посилання';
-      if (tooltip) tooltip.style.opacity = '0';
-    }
-    
-    async function copyToClipboardFallback(text: string): Promise<void> {
-      return new Promise((resolve, reject) => {
-        // Create temporary input element
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.value = text;
-        input.style.position = 'fixed';
-        input.style.top = '-9999px';
-        input.style.left = '-9999px';
-        input.style.opacity = '0';
-        input.setAttribute('readonly', '');
-        
-        document.body.appendChild(input);
-        
-        try {
-          input.focus();
-          input.select();
-          input.setSelectionRange(0, text.length);
+      function copyToClipboardFallback(text) {
+        return new Promise(function(resolve, reject) {
+          // Create temporary input element
+          const input = document.createElement('input');
+          input.type = 'text';
+          input.value = text;
+          input.style.position = 'fixed';
+          input.style.top = '-9999px';
+          input.style.left = '-9999px';
+          input.style.opacity = '0';
+          input.setAttribute('readonly', '');
           
-          const successful = document.execCommand('copy');
-          document.body.removeChild(input);
+          document.body.appendChild(input);
           
-          if (successful) {
-            resolve();
-          } else {
-            reject(new Error('Copy command failed'));
+          try {
+            input.focus();
+            input.select();
+            input.setSelectionRange(0, text.length);
+            
+            const successful = document.execCommand('copy');
+            document.body.removeChild(input);
+            
+            if (successful) {
+              resolve();
+            } else {
+              reject(new Error('Copy command failed'));
+            }
+          } catch (err) {
+            document.body.removeChild(input);
+            reject(err);
           }
-        } catch (err) {
-          document.body.removeChild(input);
-          reject(err);
-        }
-      });
+        });
+      }
+      
+      function showSuccessFeedback() {
+        const copyIcon = document.getElementById('copy-icon');
+        const checkIcon = document.getElementById('check-icon');
+        const copyText = document.getElementById('copy-text');
+        const tooltip = document.getElementById('copy-tooltip');
+        
+        // Show success state
+        if (copyIcon) copyIcon.style.opacity = '0';
+        if (checkIcon) checkIcon.style.opacity = '1';
+        if (copyText) copyText.textContent = 'Скопійовано!';
+        if (tooltip) tooltip.style.opacity = '1';
+        
+        // Reset after 2 seconds
+        setTimeout(resetFeedback, 2000);
+      }
+      
+      function showErrorFeedback() {
+        const copyText = document.getElementById('copy-text');
+        if (copyText) copyText.textContent = 'Помилка';
+        
+        // Reset after 2 seconds
+        setTimeout(resetFeedback, 2000);
+      }
+      
+      function resetFeedback() {
+        const copyIcon = document.getElementById('copy-icon');
+        const checkIcon = document.getElementById('check-icon');
+        const copyText = document.getElementById('copy-text');
+        const tooltip = document.getElementById('copy-tooltip');
+        
+        if (copyIcon) copyIcon.style.opacity = '1';
+        if (checkIcon) checkIcon.style.opacity = '0';
+        if (copyText) copyText.textContent = 'Скопіювати посилання';
+        if (tooltip) tooltip.style.opacity = '0';
+      }
+      
+      return true;
     }
-  });
+    
+    // Try to initialize immediately
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function() {
+        let attempts = 0;
+        const maxAttempts = 10;
+        
+        function tryInit() {
+          attempts++;
+          if (initCopyButton() || attempts >= maxAttempts) {
+            return;
+          }
+          setTimeout(tryInit, 100);
+        }
+        
+        tryInit();
+      });
+    } else {
+      // DOM is already loaded
+      let attempts = 0;
+      const maxAttempts = 10;
+      
+      function tryInit() {
+        attempts++;
+        if (initCopyButton() || attempts >= maxAttempts) {
+          return;
+        }
+        setTimeout(tryInit, 100);
+      }
+      
+      tryInit();
+    }
+  })();
 </script>
