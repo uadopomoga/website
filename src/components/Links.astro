@@ -10,15 +10,19 @@ const {settings} = Astro.props
     
     <!-- YouTube -->
       <div class="aspect-video w-full overflow-hidden rounded-2xl max-w-4xl mx-auto">
-        <iframe 
-          class="w-full h-full"
-          src={settings.main_video}
-          title="YouTube video player" 
-          loading="lazy"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-          allowfullscreen
-          referrerpolicy="strict-origin-when-cross-origin">
-        </iframe>
+        <div 
+          class="w-full h-full bg-bs-surface-1 flex items-center justify-center cursor-pointer relative group youtube-placeholder"
+          data-video-src={settings.main_video}
+        >
+          <div class="text-center">
+            <div class="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-3 bg-red-600 rounded-full flex items-center justify-center group-hover:bg-red-500 transition-colors">
+              <svg class="w-8 h-8 sm:w-10 sm:h-10 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
+            <p class="text-bs-surface-2 text-sm sm:text-base">Натисніть, щоб переглянути відео</p>
+          </div>
+        </div>
       </div>
     
       <!-- All other links to media -->
@@ -68,4 +72,30 @@ const {settings} = Astro.props
       originalWarn.apply(console, args);
     };
   }
+</script>
+
+<!-- Lazy YouTube Loading Script -->
+<script is:inline defer>
+  // Lazy load YouTube videos for better performance
+  document.addEventListener('DOMContentLoaded', function() {
+    const youtubeElements = document.querySelectorAll('.youtube-placeholder');
+    
+    youtubeElements.forEach(function(element) {
+      element.addEventListener('click', function() {
+        const videoSrc = this.getAttribute('data-video-src');
+        if (videoSrc) {
+          const iframe = document.createElement('iframe');
+          iframe.className = 'w-full h-full';
+          iframe.src = videoSrc + '&autoplay=1';
+          iframe.title = 'YouTube video player';
+          iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+          iframe.allowFullscreen = true;
+          iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+          
+          // Replace placeholder with iframe
+          this.parentNode.replaceChild(iframe, this);
+        }
+      });
+    });
+  });
 </script>

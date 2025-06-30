@@ -3,44 +3,69 @@ import global_settings from '../data/global_settings.json'
 
 import Links from './Links.astro'
 
-import Image from 'astro/components/Image.astro'
+import { Image } from 'astro:assets'
 import logo from '../assets/theme-images/logo.png'
 
 const {title, content, main_fundraise} = Astro.props
 ---
 
-<section class="bs-container py-8 flex flex-col lg:flex-row items-stretch gap-12 justify-between">
+<!-- Add critical CSS hint -->
+<style>
+  /* Critical styles for above-the-fold content */
+  .home-section {
+    min-height: 50vh;
+    contain: layout style;
+  }
+  
+  .home-logo {
+    will-change: auto;
+    transform: translateZ(0);
+  }
+  
+  .home-cta {
+    contain: layout;
+  }
+</style>
+
+<section class="bs-container py-6 sm:py-8 flex flex-col lg:flex-row items-stretch gap-8 lg:gap-12 justify-between home-section">
 
   <!-- Logo, title and description of the project -->
-  <div class="flex flex-col gap-6 lg:max-w-lg w-full items-start py-16 lg:py-32 flex-1">
+  <div class="flex flex-col gap-4 sm:gap-6 lg:max-w-lg w-full items-start py-8 sm:py-16 lg:py-32 flex-1">
 
     <div class="flex items-center w-full">
-      <a class="flex xl:min-w-16 group" href="/" aria-label='logo'>
-        <Image src={logo} alt="logo" width="96" height="96" class="opacity-80 rounded-2xl" loading="eager" />
+      <a class="flex xl:min-w-16 group home-logo" href="/" aria-label='logo'>
+        <Image 
+          src={logo} 
+          alt="logo" 
+          width="96" 
+          height="96" 
+          class="opacity-80 rounded-2xl w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24" 
+          loading="eager"
+          format="webp"
+          quality={85}
+          sizes="(max-width: 640px) 64px, (max-width: 1024px) 80px, 96px"
+        />
       </a>
-      <h1 class="bs-h1 ml-4" set:html={title} />
+      <h1 class="bs-h1 ml-3 sm:ml-4 text-xl sm:text-2xl lg:text-3xl xl:text-4xl" set:html={title} />
     </div>
 
     <!-- Content -->
-    <div class="bs-body-text xl:text-xl flex flex-col gap-4 [&_p]:last:text-bs-foreground-dark w-full" set:html={content} />
+    <div class="bs-body-text text-base sm:text-lg xl:text-xl flex flex-col gap-3 sm:gap-4 [&_p]:last:text-bs-foreground-dark w-full" set:html={content} />
 
     <!-- Call to action -->
-    <div class="p-8 rounded-none border-l-4 border-bs-primary/30 bg-bs-surface-0/5 w-full">
-
-      <h2 class="bs-h3 mb-6">Підтримати проект</h3>
-      <p class="bs-body-text mb-8 max-w-2xl">
+    <div class="p-6 sm:p-8 rounded-none border-l-4 border-bs-primary/30 bg-bs-surface-0/5 w-full home-cta">
+      <h2 class="bs-h3 mb-4 sm:mb-6 text-lg sm:text-xl lg:text-2xl">Підтримати проект</h2>
+      <p class="bs-body-text mb-6 sm:mb-8 max-w-2xl text-sm sm:text-base">
         Ваша підтримка допомагає нам продовжувати нашу роботу з надання допомоги там, де вона найбільш необхідна.
       </p>
-
-        <a href={main_fundraise} class="bs-btn inline-block" target="_blank">
-          Фінансово підтримати
-        </a>
-
+      <a href={main_fundraise} class="bs-btn inline-block text-sm sm:text-base px-4 sm:px-6 py-2 sm:py-3" target="_blank" rel="noopener noreferrer">
+        Фінансово підтримати
+      </a>
     </div>
   </div>
 
   <!-- Youtube and all links to project -->
-  <div class="flex flex-col gap-6 lg:max-w-2xl w-full items-end py-16 lg:py-32 flex-1">
+  <div class="flex flex-col gap-4 sm:gap-6 lg:max-w-2xl w-full items-start lg:items-end py-8 sm:py-16 lg:py-32 flex-1">
     <Links settings={global_settings}/>
   </div>
 

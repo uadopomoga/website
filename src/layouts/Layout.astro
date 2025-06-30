@@ -71,7 +71,7 @@ const contentType = isArticle ? 'article' : 'website'
     
     <meta name="author" content="UAdopomoga" />
     <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="dev.uadopomoga.com.ua"/>
+    <link rel="canonical" href="https://dev.uadopomoga.com.ua"/>
 
     <!-- Structured Data for Articles -->
     {isArticle && (
@@ -152,70 +152,6 @@ const contentType = isArticle ? 'article' : 'website'
 			<slot 
 		/>
 		</main>
-	
-		
-		<!-- <script>
-			// Handle anchor navigation
-			document.addEventListener('DOMContentLoaded', function() {
-				// Handle clicks on anchor links
-				document.addEventListener('click', function(e) {
-					if (!e.target || !(e.target instanceof Element)) return;
-					const link = e.target.closest('a');
-					if (link && link.href) {
-						const url = new URL(link.href);
-						// Check if this is an anchor link to the same page
-						if (url.pathname === window.location.pathname && url.hash) {
-							e.preventDefault();
-							const target = document.querySelector(url.hash);
-							if (target) {
-								target.scrollIntoView({ 
-									behavior: 'smooth',
-									block: 'start'
-								});
-								// Update URL without page reload
-								history.pushState(null, '', url.hash);
-							}
-						}
-					}
-				});
-				
-				// Handle direct navigation to anchor (e.g., page refresh on /#contacts)
-				if (window.location.hash) {
-					setTimeout(() => {
-						const target = document.querySelector(window.location.hash);
-						if (target) {
-							target.scrollIntoView({ 
-								behavior: 'smooth',
-								block: 'start'
-							});
-						}
-					}, 100); // Small delay to ensure page is loaded
-				}
-			});
-		</script> -->
-		
-		<!-- Performance monitoring -->
-		<script is:inline defer>
-			// Basic performance monitoring
-			window.addEventListener('load', function() {
-				if ('performance' in window) {
-					const perfData = performance.getEntriesByType('navigation')[0];
-					console.log('Page Load Time:', perfData.loadEventEnd - perfData.fetchStart, 'ms');
-					
-					// Monitor LCP
-					if ('PerformanceObserver' in window) {
-						const observer = new PerformanceObserver((list) => {
-							for (const entry of list.getEntries()) {
-								if (entry.entryType === 'largest-contentful-paint') {
-									console.log('LCP:', entry.startTime, 'ms');
-								}
-							}
-						});
-						observer.observe({entryTypes: ['largest-contentful-paint']});
-					}
-				}
-			});
-		</script>
 	</body>
 </html>
 
