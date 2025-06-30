@@ -9,10 +9,13 @@ import { Image } from 'astro:assets'
 import bg_image from '../assets/bg-image.webp'
 import Header from '../components/Header.astro'
 
-const {title, description, theme_color, image, image_alt, url} = Astro.props
+const {title, description, theme_color, image, image_alt, url, isArticle, publishedTime, modifiedTime} = Astro.props
 
 // Default social sharing image
 const defaultImage = bg_image.src
+
+// Determine content type
+const contentType = isArticle ? 'article' : 'website'
 ---
 <html lang="uk">
 
@@ -30,7 +33,7 @@ const defaultImage = bg_image.src
 	  <meta name="description" content={description} />
     <meta name="theme-color" content={theme_color} />
 
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={contentType} />
     <meta property="og:url" content={url} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -38,15 +41,60 @@ const defaultImage = bg_image.src
     <meta property="og:image:alt" content={image_alt} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/jpeg" />
     <meta property="og:site_name" content="UAdopomoga" />
     <meta property="og:locale" content="uk_UA" />
+    <meta property="article:author" content="UAdopomoga" />
+    {isArticle && publishedTime && <meta property="article:published_time" content={publishedTime} />}
+    {isArticle && modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
+    {isArticle && <meta property="article:section" content="Новини" />}
 
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@uadopomoga" />
+    <meta name="twitter:creator" content="@uadopomoga" />
     <meta name="twitter:url" content={url} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={image || defaultImage} />
     <meta name="twitter:image:alt" content={image_alt} />
+    
+    <!-- Additional meta tags for better sharing -->
+    <meta name="author" content="UAdopomoga" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={url} />
+
+    <!-- Structured Data for Articles -->
+    {isArticle && (
+      <script type="application/ld+json">
+        {
+          JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": title,
+            "description": description,
+            "image": image || defaultImage,
+            "author": {
+              "@type": "Organization",
+              "name": "UAdopomoga"
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "UAdopomoga",
+              "logo": {
+                "@type": "ImageObject",
+                "url": `${new URL(url).origin}/favicon.png`
+              }
+            },
+            "datePublished": publishedTime,
+            "dateModified": modifiedTime || publishedTime,
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": url
+            }
+          })
+        }
+      </script>
+    )}
 
     <link rel="canonical" href={url} />
 

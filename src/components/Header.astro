@@ -28,12 +28,13 @@ const {title} = Astro.props
 
       <!-- Mobile menu hamburger button -->
       <button 
-        class="md:hidden p-2 text-bs-white hover:text-bs-primary transition-colors pt-3"
+        class="md:hidden relative z-50 p-3 text-bs-white hover:text-bs-primary transition-colors touch-manipulation"
         id="mobile-menu-toggle"
         aria-label="Відкрити меню"
         aria-expanded="false"
+        type="button"
       >
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-6 h-6 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
         </svg>
       </button>
@@ -60,46 +61,75 @@ const {title} = Astro.props
 </header>
 
 <script>
-  // Mobile menu toggle functionality
+  // Mobile menu toggle functionality with improved touch support
   document.addEventListener('DOMContentLoaded', function() {
-    const menuToggle = document.getElementById('mobile-menu-toggle');
-    const mobileMenu = document.getElementById('mobile-menu');
+    const menuToggle = document.getElementById('mobile-menu-toggle') as HTMLButtonElement | null;
+    const mobileMenu = document.getElementById('mobile-menu') as HTMLElement | null;
     
     if (menuToggle && mobileMenu) {
-      menuToggle.addEventListener('click', function() {
-        const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+      // Function to toggle menu
+      function toggleMenu(): void {
+        const isExpanded = menuToggle!.getAttribute('aria-expanded') === 'true';
         
         if (isExpanded) {
-          mobileMenu.style.maxHeight = '0';
-          menuToggle.setAttribute('aria-expanded', 'false');
-          menuToggle.innerHTML = `
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-            </svg>
-          `;
+          closeMenu();
         } else {
-          mobileMenu.style.maxHeight = mobileMenu.scrollHeight + 'px';
-          menuToggle.setAttribute('aria-expanded', 'true');
-          menuToggle.innerHTML = `
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-            </svg>
-          `;
+          openMenu();
         }
+      }
+      
+      function openMenu(): void {
+        mobileMenu!.style.maxHeight = mobileMenu!.scrollHeight + 'px';
+        menuToggle!.setAttribute('aria-expanded', 'true');
+        menuToggle!.innerHTML = `
+          <svg class="w-6 h-6 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        `;
+      }
+      
+      function closeMenu(): void {
+        mobileMenu!.style.maxHeight = '0';
+        menuToggle!.setAttribute('aria-expanded', 'false');
+        menuToggle!.innerHTML = `
+          <svg class="w-6 h-6 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        `;
+      }
+      
+      // Add click event listener
+      menuToggle.addEventListener('click', function(e: Event) {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleMenu();
       });
+      
+      // Add touch event listeners for better mobile support
+      menuToggle.addEventListener('touchstart', function(e: TouchEvent) {
+        e.preventDefault();
+      }, { passive: false });
+      
+      menuToggle.addEventListener('touchend', function(e: TouchEvent) {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleMenu();
+      }, { passive: false });
       
       // Close mobile menu when clicking on a link
       const mobileMenuLinks = mobileMenu.querySelectorAll('a');
       mobileMenuLinks.forEach(link => {
         link.addEventListener('click', function() {
-          mobileMenu.style.maxHeight = '0';
-          menuToggle.setAttribute('aria-expanded', 'false');
-          menuToggle.innerHTML = `
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-            </svg>
-          `;
+          closeMenu();
         });
+      });
+      
+      // Close menu when clicking outside
+      document.addEventListener('click', function(e: Event) {
+        const target = e.target as Node;
+        if (target && !menuToggle!.contains(target) && !mobileMenu!.contains(target)) {
+          closeMenu();
+        }
       });
     }
   });
