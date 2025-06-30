@@ -6,7 +6,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
   try {
     console.log('=== API endpoint called ===');
 
-    // Try multiple ways to access the environment variables
     const resendApiKey =
       import.meta.env.RESEND_API_KEY ||
       process.env.RESEND_API_KEY ||

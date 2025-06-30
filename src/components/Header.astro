@@ -28,7 +28,7 @@ const {title} = Astro.props
 
       <!-- Mobile menu hamburger button -->
       <button 
-        class="md:hidden relative z-50 p-3 text-bs-white hover:text-bs-primary transition-colors touch-manipulation"
+        class="md:hidden relative z-50 p-3 min-w-[48px] min-h-[48px] flex items-center justify-center text-bs-white hover:text-bs-primary transition-colors touch-manipulation cursor-pointer"
         id="mobile-menu-toggle"
         aria-label="Відкрити меню"
         aria-expanded="false"
@@ -43,8 +43,9 @@ const {title} = Astro.props
 
   <!-- Mobile Navigation Links-->
   <nav 
-    class="md:hidden bg-bs-surface-2 border-t border-bs-surface-1 overflow-hidden transition-all duration-300 ease-in-out max-h-0" 
+    class="md:hidden bg-bs-surface-2 border-t border-bs-surface-1 overflow-hidden transition-all duration-300 ease-in-out max-h-0 relative z-40" 
     id="mobile-menu"
+    aria-hidden="true"
   >
     <div class="py-4">
       {navigation_content.nav.map(item =>
@@ -61,13 +62,11 @@ const {title} = Astro.props
 </header>
 
 <script>
-  // Mobile menu toggle functionality with improved touch support
   document.addEventListener('DOMContentLoaded', function() {
     const menuToggle = document.getElementById('mobile-menu-toggle') as HTMLButtonElement | null;
     const mobileMenu = document.getElementById('mobile-menu') as HTMLElement | null;
     
     if (menuToggle && mobileMenu) {
-      // Function to toggle menu
       function toggleMenu(): void {
         const isExpanded = menuToggle!.getAttribute('aria-expanded') === 'true';
         
@@ -80,7 +79,9 @@ const {title} = Astro.props
       
       function openMenu(): void {
         mobileMenu!.style.maxHeight = mobileMenu!.scrollHeight + 'px';
+        mobileMenu!.setAttribute('aria-hidden', 'false');
         menuToggle!.setAttribute('aria-expanded', 'true');
+        menuToggle!.setAttribute('aria-label', 'Закрити меню');
         menuToggle!.innerHTML = `
           <svg class="w-6 h-6 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -90,7 +91,9 @@ const {title} = Astro.props
       
       function closeMenu(): void {
         mobileMenu!.style.maxHeight = '0';
+        mobileMenu!.setAttribute('aria-hidden', 'true');
         menuToggle!.setAttribute('aria-expanded', 'false');
+        menuToggle!.setAttribute('aria-label', 'Відкрити меню');
         menuToggle!.innerHTML = `
           <svg class="w-6 h-6 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
@@ -98,23 +101,12 @@ const {title} = Astro.props
         `;
       }
       
-      // Add click event listener
+      // Add click event listener (works for both mouse and touch)
       menuToggle.addEventListener('click', function(e: Event) {
         e.preventDefault();
         e.stopPropagation();
         toggleMenu();
       });
-      
-      // Add touch event listeners for better mobile support
-      menuToggle.addEventListener('touchstart', function(e: TouchEvent) {
-        e.preventDefault();
-      }, { passive: false });
-      
-      menuToggle.addEventListener('touchend', function(e: TouchEvent) {
-        e.preventDefault();
-        e.stopPropagation();
-        toggleMenu();
-      }, { passive: false });
       
       // Close mobile menu when clicking on a link
       const mobileMenuLinks = mobileMenu.querySelectorAll('a');
@@ -129,6 +121,14 @@ const {title} = Astro.props
         const target = e.target as Node;
         if (target && !menuToggle!.contains(target) && !mobileMenu!.contains(target)) {
           closeMenu();
+        }
+      });
+
+      // Close menu on escape key
+      document.addEventListener('keydown', function(e: KeyboardEvent) {
+        if (e.key === 'Escape' && menuToggle!.getAttribute('aria-expanded') === 'true') {
+          closeMenu();
+          menuToggle!.focus();
         }
       });
     }
