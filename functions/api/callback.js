@@ -26,8 +26,8 @@ export async function onRequest(context) {
     data, // arbitrary space for passing data between middlewares
   } = context;
 
-  const client_id = env.GITHUB_CLIENT_ID;
-  const client_secret = env.GITHUB_CLIENT_SECRET;
+  const client_id = env.GITHUB_APP_CLIENT_ID;
+  const client_secret = env.GITHUB_APP_CLIENT_SECRET;
 
   try {
     const url = new URL(request.url);
