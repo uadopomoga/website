@@ -7,8 +7,7 @@ export async function onRequest(context) {
     next, // used for middleware or to fetch assets
     data, // arbitrary space for passing data between middlewares
   } = context;
-
-  const client_id = env.GITHUB_APP_CLIENT_ID;
+  const client_id = env.OAUTH_GITHUB_CLIENT_ID;
 
   try {
     const url = new URL(request.url);
