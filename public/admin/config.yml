@@ -4,7 +4,7 @@ backend:
   branch: main
   site_domain: dev.uadopomoga.com.ua
   base_url: https://dev.uadopomoga.com.ua
-  auth_endpoint: oauth
+  auth_endpoint: /oauth
 media_folder: public/content-images
 public_folder: public/content-images
 collections:
