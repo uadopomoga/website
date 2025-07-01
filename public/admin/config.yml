@@ -1,0 +1,31 @@
+backend:
+  name: github
+  repo: unleftie/uadopomoga
+  branch: main
+  site_domain: https://dev.uadopomoga.com.ua/
+  base_url: https://dev.uadopomoga.com.ua/
+  auth_endpoint: /api/auth
+media_folder: public/content-images
+public_folder: public/content-images
+collections:
+  - name: 'blog'
+    label: 'blog'
+    folder: 'src/content/posts'
+    create: true
+    slug: '{{slug}}'
+    editor:
+      preview: false
+    fields:
+      - { label: 'Title', name: 'title', widget: 'string' }
+      - { label: 'Images', name: 'image', widget: '' }
+      - { label: 'Image Alt Text', name: 'image_alt', widget: 'string' }
+      - { label: 'Background Image', name: 'background_image', widget: 'image' }
+      - {
+          label: 'Background Image Alt Text',
+          name: 'background_image_alt',
+          widget: 'string',
+        }
+      - { label: 'Video', name: 'video', widget: '' }
+      - { label: 'Publish Date', name: 'date', widget: 'datetime' }
+      - { label: 'CTA', name: 'cta', widget: 'string' }
+      - { label: 'Content', name: 'content', widget: 'markdown' }
