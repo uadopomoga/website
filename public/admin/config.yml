@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: unleftie/uadopomoga
+  repo: uadopomoga/website
   branch: main
   site_domain: dev.uadopomoga.com.ua
   base_url: https://dev.uadopomoga.com.ua
