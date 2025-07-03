@@ -5,19 +5,30 @@ backend:
   site_domain: dev.uadopomoga.com.ua
   base_url: https://dev.uadopomoga.com.ua
   auth_endpoint: /oauth
-media_folder: public/content-images
-public_folder: public/content-images
+
+# publish_mode: editorial_workflow
+
+media_folder: public/content-images/posts
+public_folder: /content-images/posts
+
 collections:
   - name: 'blog'
     label: 'blog'
     folder: 'src/content/posts'
     create: true
     slug: '{{slug}}'
+    media_folder: '{{media_folder}}/{{slug}}'
+    public_folder: '{{public_folder}}/{{slug}}'
     editor:
       preview: false
     fields:
       - { label: 'Title', name: 'title', widget: 'string' }
-      - { label: 'Images', name: 'image', widget: '' }
+      - {
+          label: 'Images',
+          name: 'image',
+          widget: 'list',
+          field: { label: 'Image', name: 'image', widget: 'image' },
+        }
       - { label: 'Image Alt Text', name: 'image_alt', widget: 'string' }
       - { label: 'Background Image', name: 'background_image', widget: 'image' }
       - {
@@ -25,7 +36,7 @@ collections:
           name: 'background_image_alt',
           widget: 'string',
         }
-      - { label: 'Video', name: 'video', widget: '' }
+      - { label: 'Video', name: 'video', widget: 'string', required: false }
       - { label: 'Publish Date', name: 'date', widget: 'datetime' }
       - { label: 'CTA', name: 'cta', widget: 'string' }
       - { label: 'Content', name: 'content', widget: 'markdown' }
