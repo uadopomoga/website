@@ -15,7 +15,7 @@ export async function getAllPosts() {
 
       return {
         title: post.data.title,
-        content: post.body,
+        content: post.body || '', // Ensure content is always a string
         image: Array.isArray(post.data.image)
           ? [...post.data.image]
           : post.data.image,
@@ -33,6 +33,7 @@ export async function getAllPosts() {
 
   const formattedJsonPosts = oldPosts.map((post, index) => ({
     ...post,
+    content: post.content || '', // Ensure content is always a string
     date: post.date,
     isMdPost: false,
     slug: post.url

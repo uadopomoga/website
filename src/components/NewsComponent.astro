@@ -5,6 +5,9 @@ import Image from 'astro/components/Image.astro'
 const allPosts = await getAllPosts()
 
 function truncateContent(content: string, maxLength: number = 150) {
+  if (!content || typeof content !== 'string') {
+    return ''
+  }
   const textContent = content.replace(/<[^>]*>/g, '') 
   return textContent.length > maxLength 
     ? textContent.substring(0, maxLength) + '...' 
