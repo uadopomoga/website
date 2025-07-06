@@ -17,8 +17,8 @@ collections:
     folder: 'src/content/posts'
     create: true
     slug: '{{slug}}'
-    media_folder: '{{media_folder}}/{{slug}}'
-    public_folder: '{{public_folder}}/{{slug}}'
+    media_folder: '../../../public/posts-images/{{slug}}'
+    public_folder: '/posts-images/{{slug}}'
     editor:
       preview: false
     fields:
