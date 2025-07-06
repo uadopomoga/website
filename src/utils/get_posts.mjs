@@ -22,10 +22,18 @@ export async function getAllPosts() {
         body: post.body || '',
         renderedContent: Content,
         image: Array.isArray(post.data.image)
-          ? [...post.data.image]
-          : post.data.image,
+          ? post.data.image.map((img) =>
+              img.startsWith('/') ? img : `/${img}`
+            )
+          : post.data.image && !post.data.image.startsWith('/')
+            ? `/${post.data.image}`
+            : post.data.image,
         image_alt: post.data.image_alt,
-        background_image: post.data.background_image,
+        background_image:
+          post.data.background_image &&
+          !post.data.background_image.startsWith('/')
+            ? `/${post.data.background_image}`
+            : post.data.background_image,
         background_image_alt: post.data.background_image_alt,
         date: post.data.date.toISOString().split('T')[0],
         cta: post.data.cta || 'Читати далі',

@@ -2,14 +2,18 @@
 import Layout from '../../layouts/Layout.astro'
 import Image from 'astro/components/Image.astro'
 import { getCollection } from 'astro:content'
+import { marked } from 'marked'
 import posts from '../../data/posts/old_posts.json'
 import global_settings from '../../data/global_settings.json'
 
 export async function getStaticPaths() {
   const mdPosts = await getCollection('posts');
-  const mdPaths = mdPosts.map(post => ({
-    params: { slug: post.slug },
-    props: { post: { ...post.data, slug: post.slug, isMdPost: true, body: post.body } },
+  const mdPaths = await Promise.all(mdPosts.map(async post => {
+    const htmlContent = await marked(post.body || '');
+    return {
+      params: { slug: post.slug },
+      props: { post: { ...post.data, slug: post.slug, isMdPost: true, body: post.body, content: htmlContent } },
+    };
   }));
 
   const postsWithSlugs = posts.map((post, index) => ({
