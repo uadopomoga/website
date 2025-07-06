@@ -8,13 +8,13 @@ backend:
 
 # publish_mode: editorial_workflow
 
-media_folder: posts-images
-public_folder: /posts-images
+media_folder: 'static/images/uploads'
+public_folder: '/images/uploads'
 
 collections:
   - name: 'blog'
     label: 'blog'
-    folder: 'public/posts'
+    folder: '_posts'
     create: true
     slug: '{{slug}}'
     editor:
