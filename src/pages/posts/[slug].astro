@@ -113,11 +113,7 @@ const publishedTime = new Date(post.date).toISOString();
     <!-- Content -->
     <main class="prose prose-sm sm:prose-base md:prose-lg max-w-none">
       <div class="bs-body-text text-base sm:text-lg xl:text-xl mb-8 md:mb-15 text-bs-surface-2 leading-relaxed">
-        {post.isMdPost ? (
-          <div set:html={(post as any).body} />
-        ) : (
-          <div set:html={(post as any).content} />
-        )}
+        <div set:html={(post as any).content} />
       </div>
 
       <!-- Video (only for posts that have video) -->

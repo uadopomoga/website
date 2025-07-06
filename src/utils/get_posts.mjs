@@ -1,4 +1,5 @@
 import { getCollection } from 'astro:content';
+import { marked } from 'marked';
 
 import oldPosts from '../data/posts/old_posts.json';
 
@@ -13,9 +14,13 @@ export async function getAllPosts() {
     filteredMdPosts.map(async (post) => {
       const { Content } = await post.render();
 
+      const htmlContent = await marked(post.body || '');
+
       return {
         title: post.data.title,
-        content: post.body || '', // Ensure content is always a string
+        content: htmlContent,
+        body: post.body || '',
+        renderedContent: Content,
         image: Array.isArray(post.data.image)
           ? [...post.data.image]
           : post.data.image,
@@ -33,7 +38,7 @@ export async function getAllPosts() {
 
   const formattedJsonPosts = oldPosts.map((post, index) => ({
     ...post,
-    content: post.content || '', // Ensure content is always a string
+    content: post.content || '',
     date: post.date,
     isMdPost: false,
     slug: post.url
