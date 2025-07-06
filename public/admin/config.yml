@@ -14,12 +14,11 @@ public_folder: /posts-images
 collections:
   - name: 'blog'
     label: 'blog'
-    folder: 'src/content/posts'
+    folder: 'public/content/posts'
     create: true
     slug: '{{slug}}'
-    path: '{{slug}}'
-    media_folder: '../../../public/posts-images/{{slug}}'
-    public_folder: '/posts-images/{{slug}}'
+    media_folder: '{{media_folder}}/{{slug}}'
+    public_folder: '{{public_folder}}/{{slug}}'
     editor:
       preview: false
     fields:
