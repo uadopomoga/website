@@ -13,6 +13,7 @@
     "@tailwindcss/vite": "^4.1.10",
     "astro": "^5.9.3",
     "astro-decap-cms-oauth": "^0.5.1",
+    "gray-matter": "^4.0.3",
     "marked": "^16.0.0",
     "resend": "^4.6.0",
     "swiper": "^11.2.8",

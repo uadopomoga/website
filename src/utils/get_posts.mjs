@@ -1,48 +1,55 @@
-import { getCollection } from 'astro:content';
 import { marked } from 'marked';
+import matter from 'gray-matter';
+import fs from 'fs';
+import path from 'path';
 
 import oldPosts from '../data/posts/old_posts.json';
 
 export async function getAllPosts() {
-  const mdPosts = await getCollection('posts');
+  const postsDir = path.join(process.cwd(), '_posts');
+  let mdPosts = [];
 
-  const filteredMdPosts = mdPosts.filter(
-    (post) => import.meta.env.DEV || !post.data.draft
-  );
+  try {
+    const files = fs.readdirSync(postsDir);
+    const mdFiles = files.filter((file) => file.endsWith('.md'));
 
-  const formattedMdPosts = await Promise.all(
-    filteredMdPosts.map(async (post) => {
-      const { Content } = await post.render();
+    mdPosts = await Promise.all(
+      mdFiles.map(async (file) => {
+        const filePath = path.join(postsDir, file);
+        const fileContent = fs.readFileSync(filePath, 'utf8');
+        const { data, content } = matter(fileContent);
 
-      const htmlContent = await marked(post.body || '');
+        const slug = file.replace('.md', '');
+        const htmlContent = await marked(content || '');
 
-      return {
-        title: post.data.title,
-        content: htmlContent,
-        body: post.body || '',
-        renderedContent: Content,
-        image: Array.isArray(post.data.image)
-          ? post.data.image.map((img) =>
-              img.startsWith('/') ? img : `/${img}`
-            )
-          : post.data.image && !post.data.image.startsWith('/')
-            ? `/${post.data.image}`
-            : post.data.image,
-        image_alt: post.data.image_alt,
-        background_image:
-          post.data.background_image &&
-          !post.data.background_image.startsWith('/')
-            ? `/${post.data.background_image}`
-            : post.data.background_image,
-        background_image_alt: post.data.background_image_alt,
-        date: post.data.date.toISOString().split('T')[0],
-        cta: post.data.cta || 'Читати далі',
-        slug: post.slug,
-        isMdPost: true,
-        entry: post,
-      };
-    })
-  );
+        return {
+          title: data.title,
+          content: htmlContent,
+          body: content || '',
+          image: Array.isArray(data.image)
+            ? data.image.map((img) => (img.startsWith('/') ? img : `/${img}`))
+            : data.image && !data.image.startsWith('/')
+              ? `/${data.image}`
+              : data.image,
+          image_alt: data.image_alt,
+          background_image:
+            data.background_image && !data.background_image.startsWith('/')
+              ? `/${data.background_image}`
+              : data.background_image,
+          background_image_alt: data.background_image_alt,
+          date: data.date
+            ? new Date(data.date).toISOString().split('T')[0]
+            : new Date().toISOString().split('T')[0],
+          cta: data.cta || 'Читати далі',
+          slug: slug,
+          isMdPost: true,
+        };
+      })
+    );
+  } catch (error) {
+    console.log('No _posts directory found or error reading posts:', error);
+    mdPosts = [];
+  }
 
   const formattedJsonPosts = oldPosts.map((post, index) => ({
     ...post,
@@ -60,7 +67,7 @@ export async function getAllPosts() {
       : `post-${index}`,
   }));
 
-  const allPosts = [...formattedMdPosts, ...formattedJsonPosts].sort(
+  const allPosts = [...mdPosts, ...formattedJsonPosts].sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
 

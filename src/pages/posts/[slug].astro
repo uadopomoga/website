@@ -1,39 +1,17 @@
 ---
 import Layout from '../../layouts/Layout.astro'
-import { getCollection } from 'astro:content'
-import { marked } from 'marked'
-import posts from '../../data/posts/old_posts.json'
+import { getAllPosts } from '../../utils/get_posts.mjs'
 import global_settings from '../../data/global_settings.json'
 
 export async function getStaticPaths() {
-  const mdPosts = await getCollection('posts');
-  const mdPaths = await Promise.all(mdPosts.map(async post => {
-    const htmlContent = await marked(post.body || '');
-    return {
-      params: { slug: post.slug },
-      props: { post: { ...post.data, slug: post.slug, isMdPost: true, body: post.body, content: htmlContent } },
-    };
-  }));
-
-  const postsWithSlugs = posts.map((post, index) => ({
-    ...post,
-    slug: post.url 
-      ? post.url
-          .toString()
-          .toLowerCase()
-          .replace(/[^a-zA-Zа-яА-Я0-9\s-]/g, '') 
-          .replace(/\s+/g, '-') 
-          .replace(/-+/g, '-') 
-          .replace(/^-+|-+$/g, '') 
-      : `post-${index}` 
-  }));
-
-  const jsonPaths = postsWithSlugs.map(post => ({
+  const allPosts = await getAllPosts();
+  
+  const paths = allPosts.map(post => ({
     params: { slug: post.slug },
-    props: { post: { ...post, isMdPost: false } },
+    props: { post },
   }));
 
-  return [...mdPaths, ...jsonPaths];
+  return paths;
 }
 
 const { post } = Astro.props;
