@@ -8,7 +8,7 @@ backend:
 
 # publish_mode: editorial_workflow
 
-media_folder: ../../../public/posts-images
+media_folder: public/posts-images
 public_folder: /posts-images
 
 collections:
@@ -17,8 +17,9 @@ collections:
     folder: 'src/content/posts'
     create: true
     slug: '{{slug}}'
-    media_folder: '{{media_folder}}/{{slug}}'
-    public_folder: '{{public_folder}}/{{slug}}'
+    path: '{{slug}}'
+    media_folder: '../../../public/posts-images/{{slug}}'
+    public_folder: '/posts-images/{{slug}}'
     editor:
       preview: false
     fields:
