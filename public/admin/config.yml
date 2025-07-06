@@ -8,8 +8,8 @@ backend:
 
 # publish_mode: editorial_workflow
 
-media_folder: src/content/posts-images
-public_folder: /src/content/posts-images
+media_folder: /posts-images
+public_folder: /posts-images
 
 collections:
   - name: 'blog'
