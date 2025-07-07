@@ -1,6 +1,5 @@
 ---
 import Layout from '../layouts/Layout.astro';
-
 import Home from '../components/Home.astro';
 import PostsCarousel from '../components/PostsCarousel.astro';
 import AboutPreview from '../components/AboutPreview.astro';
@@ -9,12 +8,11 @@ import Contacts from '../components/Contacts.astro';
 import Footer from '../components/Footer.astro';
 
 import home_content from '../data/home.json';
-import global_settings from '../data/global_settings.json'
-import about from '../data/about.json'
-import possibilities from '../data/possibilities.json'
-import contacts from '../data/contacts.json'
-import navigation from '../data/navigation.json'
-
+import global_settings from '../data/global_settings.json';
+import about from '../data/about.json';
+import possibilities from '../data/possibilities.json';
+import contacts from '../data/contacts.json';
+import navigation from '../data/navigation.json';
 ---
 
 <Layout 
@@ -23,19 +21,17 @@ import navigation from '../data/navigation.json'
   theme_color={global_settings.theme_color}
   url={global_settings.base_url}
   image={global_settings.social_image}
-  image_alt={global_settings.social_image_alt}
+  imageAlt={global_settings.social_image_alt}
 >
+  <Home title={home_content.title} content={home_content.content} main_fundraise={global_settings.main_fundraise}/>
 
-	<Home title={home_content.title} content={home_content.content} main_fundraise={global_settings.main_fundraise}/>
+  <PostsCarousel posts_title={home_content.posts_title}/>
 
-	<PostsCarousel posts_title={home_content.posts_title}/>
+  <AboutPreview title={about.title} preview={about.preview} image={about.image} image_alt={about.image_alt} link={about.about_link} cta={about.cta}/>
 
-	<AboutPreview title={about.title} preview={about.preview} image={about.image} image_alt={about.image_alt} link={about.about_link} cta={about.cta}/>
+  <Possibilities items={possibilities}/>
 
-	<Possibilities items={possibilities}/>
+  <Contacts contacts={contacts}/>
 
-	<Contacts contacts={contacts}/>
-
-	<Footer settings={global_settings} navigation={navigation}/>
-
+  <Footer settings={global_settings} navigation={navigation}/>
 </Layout>
