@@ -11,15 +11,12 @@ A website for promoting volunteerism and mutual aid culture in Ukraine.
 
 ## About the Project
 
-uadopomoga is a website built with Astro that showcases volunteer initiatives, resources, and news for those providing help in Ukraine. The platform aims to connect volunteers, share important information, and promote a culture of mutual assistance.
+UAdopomoga is a website built with Astro that showcases volunteer initiatives, resources, and news for those providing help in Ukraine. The platform aims to connect volunteers, share important information, and promote a culture of mutual assistance.
 
 ## Features
 
-- **News Feed**: Display latest posts about volunteer initiatives
-- **Resource Directory**: Information for volunteers and those seeking help
-- **Content Management**: Easy content updates through Markdown files
-- **Responsive Design**: Works on all devices
-- **Bilingual Support**: Content in Ukrainian and English (planned)
+- **Mail Sending**: Send emails using [Resend](https://resend.com) for contact forms and notifications
+- **Content Management**: Easy content updates through Decap CMS
 
 ## Getting Started
 
@@ -32,7 +29,7 @@ uadopomoga is a website built with Astro that showcases volunteer initiatives, r
 
 ```bash
 # Clone the repository
-git clone https://github.com/unleftie/uadopomoga.git
+git clone https://github.com/uadopomoga/website
 
 # Navigate to project directory
 cd uadopomoga
@@ -48,81 +45,108 @@ npm run dev
 
 ```
 uadopomoga/
-├── public/               # Static assets
-│   └── images/
-│       └── posts/        # Blog post images
+├── _posts/                        # Blog posts (Markdown files managed by Decap CMS)
+├── public/
+│   ├── admin/                     # Decap CMS admin config
+│   └── content-images/
+│     ├── new-posts/               # Images for new posts added via Decap CMS
+│     └── old-posts/               # Images for blog posts migrated from previous version
 ├── src/
-│   ├── assets/           # Project assets (CSS, images)
-│   ├── components/       # Astro components
-│   ├── content/          # Content collections
-│   │   └── posts/        # Blog posts in Markdown
-│   ├── data/             # JSON data files
-│   │   └── posts/        # Legacy posts data
-│   ├── layouts/          # Page layouts
-│   ├── pages/            # Page components
-│   │   └── posts/        # Dynamic post pages
-│   └── utils/            # Utility functions
-└── README.md             # This file
+│   ├── assets/                    # Static assets (CSS, fonts, theme images)
+│   ├── components/                # Astro components
+│   ├── data/                      # JSON data files and legacy posts
+│   ├── layouts/                   # Page layouts
+│   ├── pages/
+│   │   └── posts/                 # Dynamic post pages ([slug].astro)
+│   └── utils/                     # Utility functions (get_posts.mjs)
+└── README.md                      # Project documentation
+
 ```
 
 ## Content Management
 
-### Adding New Posts via GitHub
+### Using Decap CMS (Recommended)
 
-1. Navigate to the repository on GitHub.
-2. Go to the `public/content-images/posts/new-posts` directory.
-3. Upload your images to the new folder by clicking "Add file" > "Upload files".
-   _After uploading, make sure to click "Commit changes" at the bottom to save the images and the folder._
-4. Go to the `src/content/posts` directory.
-5. Click the "Add file" button and select "Create new file".
-6. Fill all the necessary fields as on the template below
-7. Name your file with a `.md` extension (e.g., `new-post.md`).
-8. Add your frontmatter and content using the template below.
+The easiest way to add and manage content is through Decap CMS, a web-based interface that allows you to create and edit posts without directly working with code.
 
-#### Post Template
+#### Accessing Decap CMS
 
-````markdown
----
-title: "Title of your post"
-images:
-  - src: "/content-images/posts/new-posts/image1.jpg"
-    alt: "Description of image 1"
-  - src: "/content-images/posts/new-posts/image2.jpg"
-    alt: "Description of image 2"
-date: YYYY-MM-DD
-background_image:
-  src: "/content-images/posts/new-posts/image1.jpg"
-  alt: "Description of image 1"
-cta: "Дізнатись більше"
----
+1. **Development**: Navigate to `https://dev.uadopomoga.com.ua/admin/` (or your deployed development environment URL + `/admin/`)
+2. **Production**: Go to `https://uadopomoga.com.ua/admin/` (or your deployed URL + `/admin/`)
 
-Main content of your post goes here. You can use **Markdown** formatting.
+#### Creating New Posts via CMS
 
-To display multiple images in your post, add them to the `images` array in the frontmatter as shown above. Each image should have a `src` (path to the image) and an `alt` (description for accessibility).
+1. Open the Decap CMS admin interface at `/admin/`
+2. Authenticate with your GitHub account
+3. Click "New Blog" to create a new post
+4. Fill in the form fields:
+   - **Title**: The post title
+   - **Images**: Upload multiple images for the post gallery
+   - **Image Alt Text**: Description for accessibility
+   - **Background Image**: Main featured image for the post
+   - **Background Image Alt Text**: Description for the featured image
+   - **Video**: Optional YouTube or video URL
+   - **Publish Date**: When the post should be published
+   - **CTA**: Call-to-action text (defaults to "Читати далі")
+   - **Content**: Main post content in Markdown format
+5. Click "Publish" to save the post
 
-You can reference these images in your content using standard Markdown syntax:
+#### How It Works
+
+- **Posts** are automatically saved to the `_posts/` folder as Markdown files
+- **Images** are uploaded to `public/content-images/new-posts/` and are web-accessible
+- **Publishing** creates a commit and push to the GitHub repository (main)
+- **Live Updates**: Changes appear on the website after automatical redeployment
+
+### Manual Content Management via GitHub (Alternative)
+
+If you prefer to work directly with files, you can still add posts manually:
+
+1. Navigate to the repository on GitHub
+2. Go to the `public/content-images/new-posts/` directory to upload images
+3. Go to the `_posts/` directory to create new post files
+4. Create a new `.md` file with the following structure:
+
+#### Manual Post Template
 
 ```markdown
-![Description of image 1](/content-images/posts/new-posts/image1.jpg)
-![Description of image 2](/content-images/posts/new-posts/image2.jpg)
+---
+title: 'Your Post Title'
+image:
+  - '/content-images/new-posts/image1.jpg'
+  - '/content-images/new-posts/image2.jpg'
+image_alt: 'Description for accessibility'
+background_image: '/content-images/new-posts/featured-image.jpg'
+background_image_alt: 'Featured image description'
+video: 'https://youtube.com/watch?v=example' # Optional
+date: 2025-01-01T12:00:00.000Z
+cta: 'Дізнатись більше'
+---
+
+Your post content goes here in **Markdown** format.
+
+You can include:
+
+- Lists and bullet points
+- **Bold** and _italic_ text
+- [Links](https://example.com)
+- Images: ![Alt text](/content-images/new-posts/image.jpg)
+
+## Subheadings
+
+More content...
 ```
-````
 
-## Subheading
+### Image Management
 
-- List item 1
-- List item 2
+All images for new posts are stored in `public/content-images/new-posts/` and are accessible via `/content-images/new-posts/filename.jpg` URLs.
 
-[Link text](https://example.com)
+**Important Notes:**
 
-### Adding Images
-
-1. Go to the `public/content-images/posts/new-posts` directory
-2. Click "Add file" > "Upload files"
-3. Upload all image files you want to include in your post
-4. Commit the changes
-
-Be sure to update the `images` array in your post's frontmatter with the correct file names and descriptions.
+- Use the **Decap CMS** interface for the best experience
+- Image paths should always start with `/content-images/new-posts/`
+- The CMS automatically handles proper file organization and paths
+- Manual editing is available but the CMS is recommended for content creators
 
 ## Development
 
@@ -139,17 +163,87 @@ npm run build
 npm run preview
 ```
 
+**Note:** The `npm run preview` command may not work correctly with the Cloudflare adapter. For testing production builds with Cloudflare Pages adapter, use:
+
+- Local development: `npm run dev`
+- Production testing: Deploy to a staging environment or use Cloudflare's preview deployments
+
 ### Adding Components
 
 To add a new component:
 
-1. Create a new file in components
+1. Create a new file in `src/components/`
 2. Import and use it in your pages or other components
 
 ## Deployment
 
-This project can be deployed on any static hosting platform like:
+This project is specifically configured for **Cloudflare Pages** deployment with the `@astrojs/cloudflare` adapter.
 
-- Netlify
-- Vercel
-- GitHub Pages
+### Cloudflare Pages (Current Setup)
+
+The project is automatically deployed on Cloudflare Pages:
+
+- **Production**: [uadopomoga.com.ua](https://uadopomoga.com.ua)
+- **Development**: [dev.uadopomoga.com.ua](https://dev.uadopomoga.com.ua)
+
+### Environment Variables
+
+The following environment variables need to be set in Cloudflare:
+
+1. **RESEND_API_KEY**: Your Resend API key for email functionality
+
+#### Setting Environment Variables in Cloudflare:
+
+**Option 1: Using Wrangler CLI**
+
+```bash
+wrangler secret put RESEND_API_KEY
+# Enter your API key when prompted
+```
+
+**Option 2: Using Cloudflare Dashboard**
+
+1. Go to your Cloudflare Workers dashboard
+2. Select your worker
+3. Go to Settings > Variables
+4. Add `RESEND_API_KEY` as a secret variable
+
+### Email Configuration
+
+The contact form uses `onboarding@resend.dev` which works for testing. For production:
+
+1. **Verify a domain with Resend** (recommended)
+2. Update the `from` field in the email configuration
+3. Or keep using `onboarding@resend.dev` for basic functionality
+
+### Testing the Deployed Contact Form
+
+You can test the deployed contact form API directly:
+
+```bash
+curl -X POST https://your-domain.com/api/sendEmail.json \
+  -F "name=Test User" \
+  -F "email=test@example.com" \
+  -F "message=Test message"
+```
+
+This should return a JSON response with a success message.
+
+### Troubleshooting Deployment
+
+If you're experiencing issues after deployment:
+
+1. Check Cloudflare Worker logs for any errors
+2. Verify the RESEND_API_KEY is properly set
+3. Check if the API endpoint is accessible at `your-domain.com/api/sendEmail.json`
+4. Ensure the contact form is submitting to the correct endpoint
+
+### Alternative Hosting Platforms
+
+While configured for Cloudflare, the project can be adapted for other static hosting platforms:
+
+- Netlify (requires adapter change)
+- Vercel (requires adapter change)
+- GitHub Pages (requires adapter change)
+
+**Note:** To use other platforms, you would need to modify `astro.config.mjs` and change from `@astrojs/cloudflare` to the appropriate adapter.
