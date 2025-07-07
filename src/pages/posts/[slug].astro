@@ -25,6 +25,19 @@ function formatDate(dateString: string | Date) {
   })
 }
 
+function getYouTubeEmbedUrl(url: string): string | null {
+  if (!url) return null;
+
+  const youtubeRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/;
+  const match = url.match(youtubeRegex);
+  
+  if (match && match[1]) {
+    return `https://www.youtube.com/embed/${match[1]}`;
+  }
+  
+  return null;
+}
+
 const formattedDate = formatDate(post.date);
 
 const currentUrl = new URL(`/posts/${post.slug}`, Astro.site || 'https://dev.uadopomoga.com.ua').href;
@@ -38,6 +51,9 @@ const socialImage = post.background_image || undefined;
 const socialImageAlt = post.background_image_alt || post.title;
 
 const publishedTime = new Date(post.date).toISOString();
+
+// Process video URL for embedding
+const videoEmbedUrl = (post as any).video ? getYouTubeEmbedUrl((post as any).video) : null;
 ---
 
 <Layout 
@@ -90,16 +106,16 @@ const publishedTime = new Date(post.date).toISOString();
     
     <!-- Content -->
     <main class="prose prose-sm sm:prose-base md:prose-lg max-w-none">
-      <div class="bs-body-text text-base sm:text-lg xl:text-xl mb-8 md:mb-15 text-bs-surface-2 leading-relaxed">
+      <div class="markdown-content text-base sm:text-lg xl:text-xl mb-8 md:mb-15 text-bs-surface-2 leading-relaxed">
         <div set:html={(post as any).content} />
       </div>
 
       <!-- Video (only for posts that have video) -->
-      {((post as any).video) && (
+      {videoEmbedUrl && (
         <div class="aspect-video w-full overflow-hidden rounded-xl md:rounded-2xl mb-8 md:mb-12">
           <iframe 
             class="w-full h-full"
-            src={(post as any).video}
+            src={videoEmbedUrl}
             title="YouTube video player" 
             loading="lazy"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
