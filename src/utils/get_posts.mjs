@@ -37,6 +37,7 @@ export async function getAllPosts() {
               ? `/${data.background_image}`
               : data.background_image,
           background_image_alt: data.background_image_alt,
+          video: data.video,
           date: data.date
             ? new Date(data.date).toISOString().split('T')[0]
             : new Date().toISOString().split('T')[0],
