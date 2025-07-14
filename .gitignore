@@ -23,6 +23,5 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 
-# CMS config - generated automatically from environment-specific configs
-public/admin/config.yml
+
 
