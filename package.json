@@ -3,10 +3,11 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
+    "dev": "npm run setup-cms-config && astro dev",
+    "build": "npm run setup-cms-config && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "setup-cms-config": "./scripts/setup-cms-config.sh"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.0",
