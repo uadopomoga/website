@@ -12,6 +12,7 @@ elif [[ "$NODE_ENV" == "development" ]]; then
     cp public/admin/config.dev.yml public/admin/config.yml
 else
     echo "Unknown environment: $NODE_ENV. Using development config as fallback..."
+    echo "Should be 'development' or 'production'"
     cp public/admin/config.dev.yml public/admin/config.yml
 fi
 
