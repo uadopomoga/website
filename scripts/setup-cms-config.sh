@@ -1,17 +1,17 @@
 #!/bin/bash
 
-ENV=${NODE_ENV:-"dev"}
+NODE_ENV=${NODE_ENV:-"dev"}
 
-echo "Setting up CMS config for environment: $ENV"
+echo "Setting up CMS config for environment: $NODE_ENV"
 
-if [[ "$ENV" == "main" ]] || [[ "$ENV" == "production" ]]; then
+if [[ "$NODE_ENV" == "production" ]]; then
     echo "Using production config..."
     cp public/admin/config.prod.yml public/admin/config.yml
-elif [[ "$ENV" == "dev" ]] || [[ "$ENV" == "development" ]]; then
+elif [[ "$NODE_ENV" == "development" ]]; then
     echo "Using development config..."
     cp public/admin/config.dev.yml public/admin/config.yml
 else
-    echo "Unknown environment: $ENV. Using development config as fallback..."
+    echo "Unknown environment: $NODE_ENV. Using development config as fallback..."
     cp public/admin/config.dev.yml public/admin/config.yml
 fi
 
