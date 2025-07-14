@@ -1,8 +1,6 @@
 #!/bin/bash
 
-# Determine environment based on current branch or environment variable
-BRANCH=$(git branch --show-current)
-ENV=${NODE_ENV:-$BRANCH}
+ENV=${NODE_ENV:-"dev"}
 
 echo "Setting up CMS config for environment: $ENV"
 
