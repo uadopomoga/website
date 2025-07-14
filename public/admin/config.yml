@@ -2,8 +2,8 @@ backend:
   name: github
   repo: uadopomoga/website
   branch: main
-  site_domain: dev.uadopomoga.com.ua
-  base_url: https://dev.uadopomoga.com.ua
+  site_domain: uadopomoga.com.ua
+  base_url: https://uadopomoga.com.ua
   auth_endpoint: /oauth
 
 # publish_mode: editorial_workflow
