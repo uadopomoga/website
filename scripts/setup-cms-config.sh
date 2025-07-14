@@ -1,6 +1,6 @@
 #!/bin/bash
 
-NODE_ENV=${NODE_ENV:-"dev"}
+NODE_ENV=${NODE_ENV:-"development"}
 
 echo "Setting up CMS config for environment: $NODE_ENV"
 
