@@ -2,12 +2,10 @@
 
 A website for promoting volunteerism and mutual aid culture in Ukraine.
 
-## URL's
-
-| Environment | URL                                                    |
-| ----------- | ------------------------------------------------------ |
-| prod        | [uadopomoga.com.ua](https://uadopomoga.com.ua)         |
-| dev         | [dev.uadopomoga.com.ua](https://dev.uadopomoga.com.ua) |
+| Environment | URL                                                                                                    | Branch | Deployment |
+| ----------- | ------------------------------------------------------------------------------------------------------ | ------ | ---------- |
+| prod        | [uadopomoga.com.ua](https://uadopomoga.com.ua), [www.uadopomoga.com.ua](https://www.uadopomoga.com.ua) | main   | on push    |
+| dev         | [dev.uadopomoga.com.ua](https://dev.uadopomoga.com.ua)                                                 | dev    | on push    |
 
 ## About the Project
 
@@ -29,10 +27,10 @@ UAdopomoga is a website built with Astro that showcases volunteer initiatives, r
 
 ```bash
 # Clone the repository
-git clone https://github.com/uadopomoga/website
+git clone git@github.com:uadopomoga/website.git
 
 # Navigate to project directory
-cd uadopomoga
+cd website
 
 # Install dependencies
 npm install
@@ -111,16 +109,16 @@ If you prefer to work directly with files, you can still add posts manually:
 
 ```markdown
 ---
-title: 'Your Post Title'
+title: "Your Post Title"
 image:
-  - '/content-images/new-posts/image1.jpg'
-  - '/content-images/new-posts/image2.jpg'
-image_alt: 'Description for accessibility'
-background_image: '/content-images/new-posts/featured-image.jpg'
-background_image_alt: 'Featured image description'
-video: 'https://youtube.com/watch?v=example' # Optional
+  - "/content-images/new-posts/image1.jpg"
+  - "/content-images/new-posts/image2.jpg"
+image_alt: "Description for accessibility"
+background_image: "/content-images/new-posts/featured-image.jpg"
+background_image_alt: "Featured image description"
+video: "https://youtube.com/watch?v=example" # Optional
 date: 2025-01-01T12:00:00.000Z
-cta: 'Дізнатись більше'
+cta: "Дізнатись більше"
 ---
 
 Your post content goes here in **Markdown** format.
