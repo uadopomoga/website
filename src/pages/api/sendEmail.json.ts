@@ -83,12 +83,66 @@ export const POST: APIRoute = async ({ request, locals }) => {
       );
     }
 
+    const turnstileSecretKey =
+      import.meta.env.TURNSTILE_SECRET_KEY ||
+      process.env.TURNSTILE_SECRET_KEY ||
+      (locals as any)?.runtime?.env?.TURNSTILE_SECRET_KEY;
+
+    if (!turnstileSecretKey) {
+      console.error('TURNSTILE_SECRET_KEY environment variable is not set');
+      return new Response(
+        JSON.stringify({
+          message: `Captcha not configured`,
+        }),
+        {
+          status: 500,
+          statusText: 'Captcha configuration error',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+    }
+
+    const data = await request.formData();
+
+    const turnstileToken = data.get('cf-turnstile-response');
+    const verifyBody = new FormData();
+    verifyBody.append('secret', turnstileSecretKey);
+    verifyBody.append('response', turnstileToken?.toString() ?? '');
+    const remoteIp = request.headers.get('CF-Connecting-IP');
+    if (remoteIp) verifyBody.append('remoteip', remoteIp);
+
+    const verifyResponse = await fetch(
+      'https://challenges.cloudflare.com/turnstile/v0/siteverify',
+      { method: 'POST', body: verifyBody }
+    );
+    const verifyResult = (await verifyResponse.json()) as {
+      success: boolean;
+      'error-codes'?: string[];
+    };
+
+    if (!verifyResult.success) {
+      console.log('Turnstile verification failed:', verifyResult['error-codes']);
+      return new Response(
+        JSON.stringify({
+          message: `Captcha verification failed`,
+        }),
+        {
+          status: 403,
+          statusText: 'Forbidden',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+    }
+
     console.log('API key found, initializing Resend...');
 
     const { Resend } = await import('resend');
     const resend = new Resend(resendApiKey);
 
-    const data = await request.formData();
     const name = data.get('name');
     const email = data.get('email');
     const message = data.get('message');

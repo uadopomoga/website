@@ -1,6 +1,10 @@
 ---
 export const prerender = false;
+
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
 ---
+
+<script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
       <!-- Contact Form -->
       <form id="contact-form" class="flex gap-4 flex-col" action="#" method="POST">
@@ -34,6 +38,8 @@ export const prerender = false;
           placeholder="Ваше повідомлення..."
           required
         />
+
+        <div class="cf-turnstile flex justify-center" data-sitekey={turnstileSiteKey} data-language="uk"></div>
         
         <input type="submit" value='Надіслати' class="bs-btn form-input px-4 py-3">
 
@@ -122,6 +128,8 @@ function initContactForm() {
           submitButton.style.color = '';
         }, 3000);
       } finally {
+        // turnstile tokens are single-use, so a fresh one is needed for the next submit
+        (window as any).turnstile?.reset();
         if (!submitButton.style.backgroundColor) {
           submitButton.value = originalText;
           submitButton.disabled = false;

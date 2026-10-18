@@ -189,6 +189,10 @@ The project is automatically deployed on Cloudflare Pages:
 The following environment variables need to be set in Cloudflare:
 
 1. **RESEND_API_KEY**: Your Resend API key for email functionality
+2. **PUBLIC_TURNSTILE_SITE_KEY**: Cloudflare Turnstile site key (public, must be available at build time)
+3. **TURNSTILE_SECRET_KEY**: Cloudflare Turnstile secret key used to verify the captcha token server-side
+
+Create the Turnstile widget in Cloudflare Dashboard > Turnstile and add `uadopomoga.com.ua`, `dev.uadopomoga.com.ua` and `localhost` as hostnames.
 
 #### Setting Environment Variables in Cloudflare:
 
@@ -197,6 +201,7 @@ The following environment variables need to be set in Cloudflare:
 ```bash
 wrangler secret put RESEND_API_KEY
 # Enter your API key when prompted
+wrangler secret put TURNSTILE_SECRET_KEY
 ```
 
 **Option 2: Using Cloudflare Dashboard**
@@ -225,7 +230,7 @@ curl -X POST https://your-domain.com/api/sendEmail.json \
   -F "message=Test message"
 ```
 
-This should return a JSON response with a success message.
+Without a valid `cf-turnstile-response` token this returns `403 Captcha verification failed`, which confirms the captcha protection is active.
 
 ### Troubleshooting Deployment
 
